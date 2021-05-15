@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App Scanner',
-      initialRoute: Routes.qr,
+      initialRoute: Routes.splash,
       routes: Routes.routes,
       theme: ThemeData(
         primaryColor: Utils.parseColor("#774595"),
