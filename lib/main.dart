@@ -1,4 +1,4 @@
-import 'package:app_scanner/utils/Utils.dart';
+import 'package:app_scanner/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
