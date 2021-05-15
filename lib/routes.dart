@@ -11,9 +11,7 @@ class Routes {
   static const String splash = '/splash';
 
   static final routes = <String, WidgetBuilder>{
-    login: (BuildContext context) => LoginScreen(
-          title: "Login",
-        ),
+    login: (BuildContext context) => LoginScreen(),
     qr: (BuildContext context) => QrScreen(
           title: "QR",
         ),

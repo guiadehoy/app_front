@@ -1,86 +1,190 @@
+import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/widgets/app_icon_widget.dart';
+import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
+import 'package:app_scanner/widgets/rounded_button_widget.dart';
+import 'package:app_scanner/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  int _counter = 0;
+  //text controllers:-----------------------------------------------------------
+  TextEditingController _userEmailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  //focus node:-----------------------------------------------------------------
+  FocusNode _passwordFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordFocusNode = FocusNode();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      primary: true,
+      appBar: EmptyAppBar(),
+      body: _buildBody(),
+    );
+  }
+
+  // body methods:--------------------------------------------------------------
+  Widget _buildBody() {
+    return Material(
+      child: Stack(
+        children: <Widget>[
+          MediaQuery.of(context).orientation == Orientation.landscape
+              ? Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: _buildLeftSide(),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: _buildRightSide(),
+                    ),
+                  ],
+                )
+              : Center(child: _buildRightSide()),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+    );
+  }
+
+  Widget _buildLeftSide() {
+    return SizedBox.expand(
+      child: Image.asset(
+        Assets.carBackground,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _buildRightSide() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            Padding(
+              padding: EdgeInsets.only(bottom: 24.0),
+              child: AppIconWidget(
+                image: Assets.logoLogin,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            //SizedBox(height: 24.0),
+            _buildUserIdField(),
+            _buildPasswordField(),
+            /*  SizedBox(
+                height: 48.0,
+                width: double.infinity, // <-- match_parent
+                child: _buildForgotPasswordButton()), */
+            Padding(
+              padding: EdgeInsets.only(top: 48.0),
+              child: SizedBox(
+                height: 48.0,
+                width: double.infinity, // <-- match_parent
+                child: _buildSignInButton(),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Widget _buildUserIdField() {
+    return TextFieldWidget(
+      label: "Usuario",
+      hint: "Usuario",
+      inputType: TextInputType.emailAddress,
+      icon: Icons.person,
+      padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+      iconColor: Colors.black54,
+      textController: _userEmailController,
+      inputAction: TextInputAction.next,
+      autoFocus: false,
+      maxLength: 100,
+      onChanged: (value) {
+        print(value);
+      },
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_passwordFocusNode);
+      },
+      errorText: "error",
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return TextFieldWidget(
+      label: "Contraseña",
+      hint: "Contraseña",
+      isObscure: true,
+      padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+      icon: Icons.lock,
+      iconColor: Colors.black54,
+      textController: _passwordController,
+      focusNode: _passwordFocusNode,
+      errorText: "Error",
+      onChanged: (value) {
+        print(value);
+      },
+    );
+  }
+
+  Widget _buildForgotPasswordButton() {
+    return Align(
+      alignment: FractionalOffset.centerRight,
+      child: FlatButton(
+        padding: EdgeInsets.all(0.0),
+        child: Text(
+          "",
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(color: Colors.blueAccent),
+        ),
+        onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return RoundedButtonWidget(
+      buttonText: "Login",
+      buttonColor: Colors.blueAccent,
+      textColor: Colors.white,
+      onPressed: () async {
+        print("_buildSignInButton");
+      },
+    );
+  }
+
+  Widget navigate(BuildContext context) {
+    print("navigate");
+  }
+
+  // dispose:-------------------------------------------------------------------
+  @override
+  void dispose() {
+    // Clean up the controller when the Widget is removed from the Widget tree
+    _userEmailController.dispose();
+    _passwordController.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
   }
 }
