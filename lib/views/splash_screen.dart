@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +21,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(child: AppIconWidget(image: Assets.appLogo)),
+    return Scaffold(
+      backgroundColor: Utils.parseColor("#774595"),
+      body: Center(child: AppIconWidget(image: Assets.appLogo)),
     );
   }
 
