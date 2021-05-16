@@ -2,7 +2,6 @@ import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/constants/preferences.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/device_utils.dart';
-import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -27,7 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   late FocusNode _passwordFocusNode;
 
   List<Color> _colors = [
-    const Color(0xFFB361CF),
+    const Color(0xFF774595),
     const Color(0xFF774595),
   ];
 
@@ -155,29 +154,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Widget _buildSignInButton() {
-    return Container(
-      alignment: Alignment.center,
-      child: RoundedButtonWidget(
-        buttonText: "Iniciar sesión",
-        buttonColor: Theme.of(context).primaryColor,
-        textColor: Colors.white,
-        onPressed: () async {
-          if (_loginStore.canLogin) {
-            DeviceUtils.hideKeyboard(context);
-            _loginStore.login(
-                _userEmailController.text, _passwordController.text);
-          } else {
-            BotToast.showSimpleNotification(
-              enableSlideOff: true,
-              backgroundColor: Colors.red,
-              titleStyle: const TextStyle(color: Colors.white),
-              subTitleStyle: const TextStyle(color: Colors.white),
-              title: "title",
-              subTitle: "subTitle",
-            );
-          }
-        },
-      ),
+    return RoundedButtonWidget(
+      buttonText: "Escanear entradas",
+      fontWeight: FontWeight.bold,
+      buttonColor: Color(0xFFE9E1EE),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: () async {
+        if (_loginStore.canLogin) {
+          DeviceUtils.hideKeyboard(context);
+          _loginStore.login(
+              _userEmailController.text, _passwordController.text);
+        } else {
+          BotToast.showSimpleNotification(
+            enableSlideOff: true,
+            backgroundColor: Colors.red,
+            titleStyle: const TextStyle(color: Colors.white),
+            subTitleStyle: const TextStyle(color: Colors.white),
+            title: "title",
+            subTitle: "subTitle",
+          );
+        }
+      },
     );
   }
 

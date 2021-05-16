@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class RoundedButtonWidget extends StatelessWidget {
   final String buttonText;
+  final FontWeight fontWeight;
+
   final Color? buttonColor;
   final Color? textColor;
   final VoidCallback? onPressed;
@@ -10,6 +12,7 @@ class RoundedButtonWidget extends StatelessWidget {
   const RoundedButtonWidget({
     Key? key,
     this.buttonText = "",
+    this.fontWeight = FontWeight.normal,
     this.buttonColor,
     this.fontSize = 16.0,
     this.textColor = Colors.white,
@@ -28,10 +31,8 @@ class RoundedButtonWidget extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         buttonText,
-        style: Theme.of(context)
-            .textTheme
-            .button!
-            .copyWith(color: textColor, fontSize: fontSize),
+        style: Theme.of(context).textTheme.button!.copyWith(
+            color: textColor, fontSize: fontSize, fontWeight: fontWeight),
       ),
     );
   }
