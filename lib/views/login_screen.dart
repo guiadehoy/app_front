@@ -1,6 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
-import 'package:app_scanner/counter.dart';
-import 'package:app_scanner/login_form.dart';
+import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
@@ -19,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  final counter = Counter();
   final _loginStore = LoginStore();
   //focus node:-----------------------------------------------------------------
   late FocusNode _passwordFocusNode;
@@ -170,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
-        counter.increment();
+        print("object");
       },
     );
   }

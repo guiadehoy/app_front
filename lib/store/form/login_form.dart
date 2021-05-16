@@ -1,4 +1,4 @@
-import 'package:app_scanner/error_store.dart';
+import 'package:app_scanner/store/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
 
@@ -72,8 +72,11 @@ abstract class _LoginStore with Store {
   void validatePassword(String value) {
     if (value.isEmpty) {
       formErrorStore.password = "La contraseña no puede ser vacía";
-    } else if (value.length < 3) {
-      formErrorStore.password = "La contraseña debe tener más de 3 caracteres";
+    } else if (value.length < 8) {
+      formErrorStore.password = "La contraseña debe tener más de 8 caracteres";
+    } else if (!matches(value,
+        r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")) {
+      formErrorStore.password = "Mensaje de contraseña";
     } else {
       formErrorStore.password = "";
     }
