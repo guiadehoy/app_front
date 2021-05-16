@@ -1,7 +1,6 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/device_utils.dart';
-import 'package:app_scanner/utils/snackbar.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';

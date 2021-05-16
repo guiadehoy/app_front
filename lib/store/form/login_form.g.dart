@@ -163,13 +163,6 @@ mixin _$FormErrorStore on _FormErrorStore, Store {
           () => super.hasErrorsInLogin,
           name: '_FormErrorStore.hasErrorsInLogin'))
       .value;
-  Computed<bool>? _$hasErrorInForgotPasswordComputed;
-
-  @override
-  bool get hasErrorInForgotPassword => (_$hasErrorInForgotPasswordComputed ??=
-          Computed<bool>(() => super.hasErrorInForgotPassword,
-              name: '_FormErrorStore.hasErrorInForgotPassword'))
-      .value;
 
   final _$userEmailAtom = Atom(name: '_FormErrorStore.userEmail');
 
@@ -206,8 +199,7 @@ mixin _$FormErrorStore on _FormErrorStore, Store {
     return '''
 userEmail: ${userEmail},
 password: ${password},
-hasErrorsInLogin: ${hasErrorsInLogin},
-hasErrorInForgotPassword: ${hasErrorInForgotPassword}
+hasErrorsInLogin: ${hasErrorsInLogin}
     ''';
   }
 }

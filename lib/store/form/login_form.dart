@@ -120,8 +120,5 @@ abstract class _FormErrorStore with Store {
   String password = "";
 
   @computed
-  bool get hasErrorsInLogin => userEmail != null || password != null;
-
-  @computed
-  bool get hasErrorInForgotPassword => userEmail != null;
+  bool get hasErrorsInLogin => userEmail == "" || password == "";
 }
