@@ -9,4 +9,6 @@ class Assets {
 
   // login screen assets
   static const String logoLogin = "assets/images/logo-login.png";
+
+  static const String logoQr = "assets/images/logo-qr.png";
 }

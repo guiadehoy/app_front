@@ -1,4 +1,5 @@
-import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
+import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,37 +10,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: EmptyAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Color(0xFFB361CF), Color(0xFF774595)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      child: Center(child: AppIconWidget(image: Assets.logoQr)),
     );
   }
 }

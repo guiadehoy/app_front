@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app_scanner/constants/assets.dart';
-import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -21,14 +20,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Utils.parseColor("#774595"),
-      body: Center(child: AppIconWidget(image: Assets.appLogo)),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            colors: [Color(0xFFB361CF), Color(0xFF774595)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight),
+      ),
+      child: Center(child: AppIconWidget(image: Assets.appLogo)),
     );
   }
 
   startTimer() {
-    var _duration = Duration(milliseconds: 10000);
+    var _duration = Duration(milliseconds: 4000);
     return Timer(_duration, navigate);
   }
 
