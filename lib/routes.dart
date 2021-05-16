@@ -1,6 +1,6 @@
-import 'package:app_scanner/views/login_screen.dart';
-import 'package:app_scanner/views/qr_screen.dart';
-import 'package:app_scanner/views/splash_screen.dart';
+import 'package:app_scanner/ui/login_screen.dart';
+import 'package:app_scanner/ui/qr_screen.dart';
+import 'package:app_scanner/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {

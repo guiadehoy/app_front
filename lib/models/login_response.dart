@@ -1,18 +1,13 @@
 class LoginResponse {
-  String access_token;
-  int id_city;
-  int user_id;
+  String accessToken;
+  int useriId;
 
-  LoginResponse(
-      {required this.access_token,
-      required this.id_city,
-      required this.user_id});
+  LoginResponse({required this.accessToken, required this.useriId});
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      access_token: json['access_token'],
-      id_city: json['id_city'],
-      user_id: json['user_id'],
+      accessToken: json['access_token'],
+      useriId: json['id_city'],
     );
   }
 }

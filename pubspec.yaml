@@ -17,6 +17,8 @@ dependencies:
   validators: ^3.0.0
   mobx: ^2.0.0
   flutter_mobx: ^2.0.0
+  flash: ^1.5.2+2
+  bot_toast: ^4.0.1
 
 dev_dependencies:
   flutter_test:

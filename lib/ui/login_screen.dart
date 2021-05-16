@@ -1,10 +1,13 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/store/form/login_form.dart';
+import 'package:app_scanner/utils/device_utils.dart';
+import 'package:app_scanner/utils/snackbar.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:app_scanner/widgets/textfield_widget.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -168,7 +171,13 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
-        print("object");
+        if (_loginStore.canLogin) {
+          DeviceUtils.hideKeyboard(context);
+          _loginStore.login(
+              _userEmailController.text, _passwordController.text);
+        } else {
+          print("object");
+        }
       },
     );
   }
@@ -181,5 +190,21 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  void showMessage(String message) {
+    showFlash(
+        context: context,
+        duration: Duration(seconds: 3),
+        builder: (_, controller) {
+          return Flash(
+            controller: controller,
+            position: FlashPosition.bottom,
+            style: FlashStyle.grounded,
+            child: FlashBar(
+              message: Text(message),
+            ),
+          );
+        });
   }
 }
