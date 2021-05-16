@@ -85,6 +85,7 @@ abstract class _LoginStore with Store {
   @action
   Future login(user, password) async {
     loading = true;
+    success = true;
   }
 
   @action
@@ -120,5 +121,5 @@ abstract class _FormErrorStore with Store {
   String password = "";
 
   @computed
-  bool get hasErrorsInLogin => userEmail == "" || password == "";
+  bool get hasErrorsInLogin => userEmail != "" || password != "";
 }

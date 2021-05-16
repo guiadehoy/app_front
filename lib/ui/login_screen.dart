@@ -6,9 +6,12 @@ import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:app_scanner/widgets/textfield_widget.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
+import '../routes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -100,6 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
             Observer(
               builder: (_) => _buildPasswordField(),
             ),
+            Observer(
+              builder: (context) {
+                return _loginStore.success ? navigate(context) : Container();
+              },
+            ),
             Padding(
               padding: EdgeInsets.only(top: 24.0),
               child: SizedBox(
@@ -170,15 +178,39 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
+        print(_loginStore.canLogin);
+        print(_loginStore.formErrorStore.userEmail);
+        print(_loginStore.formErrorStore.password);
+
         if (_loginStore.canLogin) {
           DeviceUtils.hideKeyboard(context);
           _loginStore.login(
               _userEmailController.text, _passwordController.text);
         } else {
-          print("object");
+          BotToast.showSimpleNotification(
+            enableSlideOff: true,
+            backgroundColor: Colors.red,
+            titleStyle: const TextStyle(color: Colors.white),
+            subTitleStyle: const TextStyle(color: Colors.white),
+            title: "title",
+            subTitle: "subTitle",
+          );
         }
       },
     );
+  }
+
+  Widget navigate(BuildContext context) {
+    /*SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool(Preferences.is_logged_in, true);
+    }); */
+
+    Future.delayed(Duration(milliseconds: 0), () {
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.qr, (Route<dynamic> route) => false);
+    });
+
+    return Container();
   }
 
   // dispose:-------------------------------------------------------------------
@@ -189,21 +221,5 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
-  }
-
-  void showMessage(String message) {
-    showFlash(
-        context: context,
-        duration: Duration(seconds: 3),
-        builder: (_, controller) {
-          return Flash(
-            controller: controller,
-            position: FlashPosition.bottom,
-            style: FlashStyle.grounded,
-            child: FlashBar(
-              message: Text(message),
-            ),
-          );
-        });
   }
 }
