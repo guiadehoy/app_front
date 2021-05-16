@@ -14,9 +14,7 @@ class Routes {
 
   static final routes = <String, WidgetBuilder>{
     login: (BuildContext context) => LoginScreen(),
-    qr: (BuildContext context) => QrScreen(
-          title: "QR",
-        ),
+    qr: (BuildContext context) => QrScreen(),
     splash: (BuildContext context) => SplashScreen(),
     home: (BuildContext context) => WelcomeScreen(),
   };

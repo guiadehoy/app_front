@@ -160,20 +160,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       buttonColor: Color(0xFFE9E1EE),
       textColor: Theme.of(context).primaryColor,
       onPressed: () async {
-        if (_loginStore.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          _loginStore.login(
-              _userEmailController.text, _passwordController.text);
-        } else {
-          BotToast.showSimpleNotification(
-            enableSlideOff: true,
-            backgroundColor: Colors.red,
-            titleStyle: const TextStyle(color: Colors.white),
-            subTitleStyle: const TextStyle(color: Colors.white),
-            title: "title",
-            subTitle: "subTitle",
-          );
-        }
+        Future.delayed(
+          Duration(milliseconds: 0),
+          () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.qr, (Route<dynamic> route) => false);
+          },
+        );
       },
     );
   }
