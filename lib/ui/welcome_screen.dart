@@ -76,16 +76,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             _buildLogOut(),
             Padding(
-              padding: EdgeInsets.only(bottom: 40.0),
-              child: AppIconWidget(
-                image: Assets.logoQr,
+              padding: EdgeInsets.only(top: 40.0),
+              child: Image.asset(
+                Assets.logoQr,
+                cacheHeight: 245,
+                cacheWidth: 245,
               ),
             ),
+            SizedBox(height: 16.0),
             _buildTCounter(),
+            SizedBox(height: 16.0),
+            _buildTitleScaner(),
             SizedBox(height: 16.0),
             Observer(
               builder: (context) {
@@ -107,45 +112,72 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Widget _buildTCounter() {
-    return Text(
-      "0",
-      style: TextStyle(
-          color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold),
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        "0",
+        style: TextStyle(
+          fontSize: 40.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleScaner() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        "Escaneados",
+        style: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 
   Widget _buildLogOut() {
-    return Text(
-      "Cerrar sesión",
-      style: TextStyle(
-        fontSize: 20.0,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.only(top: 46.0),
+      child: Text(
+        "Cerrar sesión",
+        style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
       ),
     );
   }
 
   Widget _buildSignInButton() {
-    return RoundedButtonWidget(
-      buttonText: "Iniciar sesión",
-      buttonColor: Theme.of(context).primaryColor,
-      textColor: Colors.white,
-      onPressed: () async {
-        if (_loginStore.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          _loginStore.login(
-              _userEmailController.text, _passwordController.text);
-        } else {
-          BotToast.showSimpleNotification(
-            enableSlideOff: true,
-            backgroundColor: Colors.red,
-            titleStyle: const TextStyle(color: Colors.white),
-            subTitleStyle: const TextStyle(color: Colors.white),
-            title: "title",
-            subTitle: "subTitle",
-          );
-        }
-      },
+    return Container(
+      alignment: Alignment.center,
+      child: RoundedButtonWidget(
+        buttonText: "Iniciar sesión",
+        buttonColor: Theme.of(context).primaryColor,
+        textColor: Colors.white,
+        onPressed: () async {
+          if (_loginStore.canLogin) {
+            DeviceUtils.hideKeyboard(context);
+            _loginStore.login(
+                _userEmailController.text, _passwordController.text);
+          } else {
+            BotToast.showSimpleNotification(
+              enableSlideOff: true,
+              backgroundColor: Colors.red,
+              titleStyle: const TextStyle(color: Colors.white),
+              subTitleStyle: const TextStyle(color: Colors.white),
+              title: "title",
+              subTitle: "subTitle",
+            );
+          }
+        },
+      ),
     );
   }
 
