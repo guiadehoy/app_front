@@ -18,8 +18,13 @@ class RoundedButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      color: buttonColor,
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: buttonColor,
+        shape: (RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        )),
+      ),
       onPressed: onPressed,
       child: Text(
         buttonText,

@@ -1,4 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
@@ -81,20 +82,17 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(bottom: 24.0),
+              padding: EdgeInsets.only(bottom: 32.0),
               child: AppIconWidget(
                 image: Assets.logoLogin,
               ),
             ),
-            //SizedBox(height: 24.0),
+            _buildTitle(),
+            SizedBox(height: 16.0),
             _buildUserIdField(),
             _buildPasswordField(),
-            /*  SizedBox(
-                height: 48.0,
-                width: double.infinity, // <-- match_parent
-                child: _buildForgotPasswordButton()), */
             Padding(
-              padding: EdgeInsets.only(top: 48.0),
+              padding: EdgeInsets.only(top: 24.0),
               child: SizedBox(
                 height: 48.0,
                 width: double.infinity, // <-- match_parent
@@ -107,10 +105,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget _buildTitle() {
+    return Text(
+      "¡Bienvenido organizor!",
+      style: TextStyle(
+          color: Utils.parseColor("#62617D"),
+          fontSize: 20.0,
+          letterSpacing: -0.4,
+          fontWeight: FontWeight.bold),
+    );
+  }
+
   Widget _buildUserIdField() {
     return TextFieldWidget(
-      label: "Usuario",
-      hint: "Usuario",
+      label: "Correo electrónico",
+      hint: "Correo electrónico",
       inputType: TextInputType.emailAddress,
       icon: Icons.person,
       padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
@@ -125,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onFieldSubmitted: (value) {
         FocusScope.of(context).requestFocus(_passwordFocusNode);
       },
-      errorText: "error",
+      errorText: null,
     );
   }
 
@@ -139,43 +148,22 @@ class _LoginScreenState extends State<LoginScreen> {
       iconColor: Colors.black54,
       textController: _passwordController,
       focusNode: _passwordFocusNode,
-      errorText: "Error",
+      errorText: null,
       onChanged: (value) {
         print(value);
       },
     );
   }
 
-  Widget _buildForgotPasswordButton() {
-    return Align(
-      alignment: FractionalOffset.centerRight,
-      child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        child: Text(
-          "",
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(color: Colors.blueAccent),
-        ),
-        onPressed: () {},
-      ),
-    );
-  }
-
   Widget _buildSignInButton() {
     return RoundedButtonWidget(
-      buttonText: "Login",
-      buttonColor: Colors.blueAccent,
+      buttonText: "Iniciar sesión",
+      buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
         print("_buildSignInButton");
       },
     );
-  }
-
-  Widget navigate(BuildContext context) {
-    print("navigate");
   }
 
   // dispose:-------------------------------------------------------------------

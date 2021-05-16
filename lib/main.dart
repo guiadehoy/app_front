@@ -1,7 +1,9 @@
+import 'package:app_scanner/constants/app_theme.dart';
 import 'package:app_scanner/routes.dart';
-import 'package:app_scanner/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'constants/strings.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,12 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'App Scanner',
+      title: Strings.appName,
       initialRoute: Routes.splash,
       routes: Routes.routes,
-      theme: ThemeData(
-        primaryColor: Utils.parseColor("#774595"),
-      ),
+      theme: themeData,
     );
   }
 }
