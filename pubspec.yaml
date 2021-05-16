@@ -19,6 +19,7 @@ dependencies:
   flutter_mobx: ^2.0.0
   flash: ^1.5.2+2
   bot_toast: ^4.0.1
+  shared_preferences: ^2.0.5
 
 dev_dependencies:
   flutter_test:

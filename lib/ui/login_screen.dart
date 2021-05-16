@@ -1,4 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/constants/preferences.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/device_utils.dart';
 import 'package:app_scanner/utils/utils.dart';
@@ -10,6 +11,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes.dart';
 
@@ -178,10 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
-        print(_loginStore.canLogin);
-        print(_loginStore.formErrorStore.userEmail);
-        print(_loginStore.formErrorStore.password);
-
         if (_loginStore.canLogin) {
           DeviceUtils.hideKeyboard(context);
           _loginStore.login(
@@ -201,13 +199,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget navigate(BuildContext context) {
-    /*SharedPreferences.getInstance().then((prefs) {
+    SharedPreferences.getInstance().then((prefs) {
       prefs.setBool(Preferences.is_logged_in, true);
-    }); */
+    });
 
     Future.delayed(Duration(milliseconds: 0), () {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(Routes.qr, (Route<dynamic> route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.home, (Route<dynamic> route) => false);
     });
 
     return Container();
