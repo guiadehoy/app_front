@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 
 import 'constants/strings.dart';
 
+// ignore: invalid_language_version_override
+// @dart=2.9
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(
