@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:app_scanner/routes.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,17 @@ class QrScreen extends StatefulWidget {
 
 class _QrScreenState extends State<QrScreen> {
   String qrCodeResult = "Aún no escaneada";
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      String codeSanner = await BarcodeScanner.scan(); //barcode scnner
+      setState(() {
+        qrCodeResult = codeSanner;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
