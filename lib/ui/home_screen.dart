@@ -9,12 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes.dart';
 
-class WelcomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   //text controllers:-----------------------------------------------------------
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
