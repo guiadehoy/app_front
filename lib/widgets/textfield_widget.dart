@@ -13,22 +13,22 @@ class TextFieldWidget extends StatelessWidget {
   final EdgeInsets padding;
   final Color hintColor;
   final Color iconColor;
-  final FocusNode focusNode;
-  final ValueChanged onFieldSubmitted;
-  final ValueChanged onChanged;
+  final FocusNode? focusNode;
+  final ValueChanged? onFieldSubmitted;
+  final ValueChanged? onChanged;
   final bool autoFocus;
   final TextInputAction inputAction;
   final int maxLength;
 
   const TextFieldWidget({
-    Key key,
-    this.icon,
-    this.hint,
-    this.errorText,
+    Key? key,
+    this.icon = Icons.person,
+    this.hint = "",
+    this.errorText = "",
     this.isObscure = false,
     this.enabled = true,
-    this.inputType,
-    this.textController,
+    this.inputType = TextInputType.text,
+    required this.textController,
     this.label = '',
     this.isIcon = true,
     this.padding = const EdgeInsets.all(0),
@@ -39,7 +39,7 @@ class TextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.maxLength = 25,
     this.autoFocus = false,
-    this.inputAction,
+    this.inputAction = TextInputAction.next,
   }) : super(key: key);
 
   @override
@@ -65,8 +65,8 @@ class TextFieldWidget extends StatelessWidget {
             hintText: this.hint,
             hintStyle:
                 // ignore: deprecated_member_use
-                Theme.of(context).textTheme.body1.copyWith(color: hintColor),
-            errorText: errorText,
+                Theme.of(context).textTheme.body1!.copyWith(color: hintColor),
+            errorText: errorText != "" ? errorText : null,
             counterText: '',
             // ignore: dead_code
             icon: false ? Icon(this.icon, color: iconColor) : null),

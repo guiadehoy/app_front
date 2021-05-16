@@ -8,12 +8,12 @@ class RoundedButtonWidget extends StatelessWidget {
   final double fontSize;
 
   const RoundedButtonWidget({
-    Key key,
-    this.buttonText,
-    this.buttonColor,
+    Key? key,
+    required this.buttonText,
+    required this.buttonColor,
     this.fontSize = 16.0,
     this.textColor = Colors.white,
-    this.onPressed,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class RoundedButtonWidget extends StatelessWidget {
         buttonText,
         style: Theme.of(context)
             .textTheme
-            .button
+            .button!
             .copyWith(color: textColor, fontSize: fontSize),
       ),
     );

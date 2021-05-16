@@ -28,7 +28,8 @@ import 'package:flutter/material.dart';
 final ThemeData themeData = new ThemeData(
     fontFamily: FontFamily.rubik,
     brightness: Brightness.light,
-    primarySwatch: MaterialColor(AppColors.purple[500].value, AppColors.purple),
+    primarySwatch:
+        MaterialColor(AppColors.purple[500]!.value, AppColors.purple),
     primaryColor: AppColors.purple[500],
     primaryColorBrightness: Brightness.light,
     accentColor: AppColors.purple[500],

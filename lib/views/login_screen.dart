@@ -1,10 +1,13 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/counter.dart';
+import 'package:app_scanner/login_form.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:app_scanner/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,8 +19,10 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  final counter = Counter();
+  final _loginStore = LoginStore();
   //focus node:-----------------------------------------------------------------
-  FocusNode _passwordFocusNode;
+  late FocusNode _passwordFocusNode;
 
   @override
   void initState() {
@@ -89,8 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             _buildTitle(),
             SizedBox(height: 16.0),
-            _buildUserIdField(),
-            _buildPasswordField(),
+            Observer(
+              builder: (_) => _buildUserIdField(),
+            ),
+            Observer(
+              builder: (_) => _buildPasswordField(),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 24.0),
               child: SizedBox(
@@ -129,12 +138,12 @@ class _LoginScreenState extends State<LoginScreen> {
       autoFocus: false,
       maxLength: 100,
       onChanged: (value) {
-        print(value);
+        _loginStore.setUserId(value);
       },
       onFieldSubmitted: (value) {
         FocusScope.of(context).requestFocus(_passwordFocusNode);
       },
-      errorText: null,
+      errorText: _loginStore.formErrorStore.userEmail,
     );
   }
 
@@ -148,9 +157,9 @@ class _LoginScreenState extends State<LoginScreen> {
       iconColor: Colors.black54,
       textController: _passwordController,
       focusNode: _passwordFocusNode,
-      errorText: null,
+      errorText: _loginStore.formErrorStore.password,
       onChanged: (value) {
-        print(value);
+        _loginStore.setPassword(value);
       },
     );
   }
@@ -161,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
       buttonColor: Theme.of(context).primaryColor,
       textColor: Colors.white,
       onPressed: () async {
-        print("_buildSignInButton");
+        counter.increment();
       },
     );
   }
