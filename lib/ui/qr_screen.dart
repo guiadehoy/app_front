@@ -81,11 +81,19 @@ class _QrScreenState extends State<QrScreen> {
             FlatButton(
               padding: EdgeInsets.all(15),
               onPressed: () async {
-                String codeSanner =
+                /*String codeSanner =
                     await BarcodeScanner.scan(); //barcode scnner
                 setState(() {
                   qrCodeResult = codeSanner;
-                });
+                });*/
+
+                Future.delayed(
+                  Duration(milliseconds: 0),
+                  () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.result, (Route<dynamic> route) => false);
+                  },
+                );
               },
               child: Text(
                 "Escanear",

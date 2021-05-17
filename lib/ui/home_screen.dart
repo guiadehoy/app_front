@@ -1,10 +1,8 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/constants/preferences.dart';
-import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes.dart';
@@ -15,14 +13,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //text controllers:-----------------------------------------------------------
-  TextEditingController _userEmailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  final _loginStore = LoginStore();
-  //focus node:-----------------------------------------------------------------
-  late FocusNode _passwordFocusNode;
-
   List<Color> _colors = [
     const Color(0xFF774595),
     const Color(0xFF774595),
@@ -31,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _passwordFocusNode = FocusNode();
   }
 
   @override
@@ -51,10 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // body methods:--------------------------------------------------------------
   Widget _buildBody() {
     return Material(
-      child: Stack(
-        children: <Widget>[
-          Center(child: _buildRightSide()),
-        ],
+      child: Center(
+        child: _buildRightSide(),
       ),
     );
   }
@@ -89,11 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 16.0),
             _buildTitleScaner(),
             SizedBox(height: 16.0),
-            Observer(
-              builder: (context) {
-                return _loginStore.success ? navigate(context) : Container();
-              },
-            ),
             Padding(
               padding: EdgeInsets.only(top: 24.0),
               child: SizedBox(
@@ -182,13 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container();
   }
 
-  // dispose:-------------------------------------------------------------------
   @override
   void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
-    _userEmailController.dispose();
-    _passwordController.dispose();
-    _passwordFocusNode.dispose();
     super.dispose();
   }
 }
