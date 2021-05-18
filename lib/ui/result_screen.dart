@@ -1,4 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/ui/home_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -21,20 +22,54 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EmptyAppBar(),
-      body: _buildRightSide(),
-    );
-  }
-
-  // body methods:--------------------------------------------------------------
-  Widget _buildBody() {
-    return Material(
-      child: Stack(
-        children: <Widget>[
-          Center(child: _buildRightSide()),
-        ],
-      ),
-    );
+        appBar: EmptyAppBar(),
+        body: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 128.0),
+                  child: Image.asset(
+                    Assets.okIcon,
+                    cacheHeight: 96,
+                    cacheWidth: 96,
+                  ),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 56.0),
+                  child: _buildWlcomeText(),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 24.0),
+                  child: _buildNameUser(),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 16.0),
+                  child: _buildTypeTicket(),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 100.0),
+                  child: Image.asset(
+                    Assets.closeIcon,
+                    cacheHeight: 64,
+                    cacheWidth: 64,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _buildRightSide() {

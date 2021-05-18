@@ -10,4 +10,6 @@ class Assets {
   static const String logoQr = "assets/images/logo-qr.png";
 
   static const String okIcon = "assets/images/ok-icon.png";
+
+  static const String closeIcon = "assets/images/close-icon.png";
 }
