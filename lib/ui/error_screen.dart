@@ -23,16 +23,17 @@ class _ErrorScreenState extends State<ErrorScreen> {
     return Scaffold(
         appBar: EmptyAppBar(),
         body: Container(
+          color: Colors.black12,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 128.0),
                   child: Image.asset(
-                    Assets.okIcon,
+                    Assets.errorIcon,
                     cacheHeight: 96,
                     cacheWidth: 96,
                   ),
@@ -46,19 +47,20 @@ class _ErrorScreenState extends State<ErrorScreen> {
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 24.0),
-                  child: _buildNameUser(),
+                  padding: EdgeInsets.only(
+                    top: 24.0,
+                    left: 56.0,
+                    right: 56.0,
+                  ),
+                  child: _buildError(),
                 ),
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                  child: _buildTypeTicket(),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 100.0),
+                  padding: EdgeInsets.only(
+                    top: 190.0,
+                    bottom: 36.0,
+                  ),
                   child: Image.asset(
                     Assets.closeIcon,
                     cacheHeight: 64,
@@ -71,40 +73,11 @@ class _ErrorScreenState extends State<ErrorScreen> {
         ));
   }
 
-  Widget _buildRightSide() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Image.asset(
-            Assets.logoQr,
-            cacheHeight: 80,
-            cacheWidth: 80,
-          ),
-          SizedBox(height: 16.0),
-          _buildWlcomeText(),
-          SizedBox(height: 16.0),
-          _buildNameUser(),
-          SizedBox(height: 16.0),
-          _buildTypeTicket(),
-          Image.asset(
-            Assets.logoQr,
-            cacheHeight: 65,
-            cacheWidth: 65,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildWlcomeText() {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "Bienvenido(a)",
+        "Error",
         style: TextStyle(
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
@@ -115,30 +88,16 @@ class _ErrorScreenState extends State<ErrorScreen> {
     );
   }
 
-  Widget _buildNameUser() {
+  Widget _buildError() {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "Carlos Galaviz",
+        "El ticket ya ha sido escaneado previamente",
+        textAlign: TextAlign.center,
         style: TextStyle(
-          fontSize: 40.0,
+          fontSize: 24.0,
           fontWeight: FontWeight.bold,
-          letterSpacing: -0.8,
-          color: const Color(0xFF333333),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTypeTicket() {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        "Ticket: Entrada general",
-        style: TextStyle(
-          fontSize: 18.0,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 0,
+          letterSpacing: -0.4,
           color: const Color(0xFF333333),
         ),
       ),

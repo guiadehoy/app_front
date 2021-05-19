@@ -24,9 +24,9 @@ class _ResultScreenState extends State<ResultScreen> {
         appBar: EmptyAppBar(),
         body: Container(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Center(
                 child: Padding(
@@ -58,7 +58,10 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 100.0),
+                  padding: EdgeInsets.only(
+                    top: 168.0,
+                    bottom: 36.0,
+                  ),
                   child: Image.asset(
                     Assets.closeIcon,
                     cacheHeight: 64,
@@ -91,6 +94,7 @@ class _ResultScreenState extends State<ResultScreen> {
       alignment: Alignment.center,
       child: Text(
         "Carlos Galaviz",
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 40.0,
           fontWeight: FontWeight.bold,

@@ -12,4 +12,6 @@ class Assets {
   static const String okIcon = "assets/images/ok-icon.png";
 
   static const String closeIcon = "assets/images/close-icon.png";
+
+  static const String errorIcon = "assets/images/error-icon.png";
 }
