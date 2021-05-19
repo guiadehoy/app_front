@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 
 import 'constants/strings.dart';
 
-// ignore: invalid_language_version_override
-// @dart=2.9
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       title: Strings.appName,
-      initialRoute: Routes.splash,
+      initialRoute: Routes.home,
       routes: Routes.routes,
       theme: themeData,
     );

@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      primary: true,
       appBar: EmptyAppBar(),
       body: _buildBody(),
     );
@@ -122,12 +121,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(top: 46.0),
-      child: Text(
-        "Cerrar sesión",
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+      child: GestureDetector(
+        onTap: () {
+          logout(context);
+        },
+        child: Text(
+          "Cerrar sesión",
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -143,25 +147,19 @@ class _HomeScreenState extends State<HomeScreen> {
         Future.delayed(
           Duration(milliseconds: 0),
           () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.qr, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamed(Routes.qr);
           },
         );
       },
     );
   }
 
-  Widget navigate(BuildContext context) {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setBool(Preferences.is_logged_in, true);
-    });
-
+  void logout(BuildContext context) {
+    print("cerrar sesión");
     Future.delayed(Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home, (Route<dynamic> route) => false);
+          Routes.login, (Route<dynamic> route) => false);
     });
-
-    return Container();
   }
 
   @override

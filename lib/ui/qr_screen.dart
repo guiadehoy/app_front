@@ -1,8 +1,7 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:app_scanner/routes.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class QrScreen extends StatefulWidget {
   @override
@@ -11,15 +10,32 @@ class QrScreen extends StatefulWidget {
 
 class _QrScreenState extends State<QrScreen> {
   String qrCodeResult = "Aún no escaneada";
+  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      String codeSanner = await BarcodeScanner.scan(); //barcode scnner
-      setState(() {
-        qrCodeResult = codeSanner;
-      });
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancelar', true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    if (barcodeScanRes == "-1") {
+      barcodeScanRes = 'No haz escaneado ningun boleto';
+    }
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
     });
   }
 
@@ -27,6 +43,7 @@ class _QrScreenState extends State<QrScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
           "Escanear entradas",
@@ -41,8 +58,7 @@ class _QrScreenState extends State<QrScreen> {
                 Future.delayed(
                   Duration(milliseconds: 0),
                   () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Routes.home, (Route<dynamic> route) => false);
+                    Navigator.of(context).pushNamed(Routes.home);
                   },
                 );
               },
@@ -63,12 +79,12 @@ class _QrScreenState extends State<QrScreen> {
           children: [
             //Message displayed over here
             Text(
-              "Resultado",
+              "Aqui es donde sucede la magía",
               style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             Text(
-              qrCodeResult,
+              _scanBarcode,
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -81,19 +97,7 @@ class _QrScreenState extends State<QrScreen> {
             FlatButton(
               padding: EdgeInsets.all(15),
               onPressed: () async {
-                /*String codeSanner =
-                    await BarcodeScanner.scan(); //barcode scnner
-                setState(() {
-                  qrCodeResult = codeSanner;
-                });*/
-
-                Future.delayed(
-                  Duration(milliseconds: 0),
-                  () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Routes.result, (Route<dynamic> route) => false);
-                  },
-                );
+                scanQR();
               },
               child: Text(
                 "Escanear",
