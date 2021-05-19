@@ -1,5 +1,6 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/constants/preferences.dart';
+import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/device_utils.dart';
 import 'package:app_scanner/utils/utils.dart';
@@ -11,8 +12,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../routes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

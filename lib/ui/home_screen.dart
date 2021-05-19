@@ -1,9 +1,7 @@
 import 'package:app_scanner/constants/assets.dart';
-import 'package:app_scanner/constants/preferences.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes.dart';
 
