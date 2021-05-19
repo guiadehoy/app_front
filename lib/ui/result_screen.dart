@@ -18,60 +18,80 @@ class _ResultScreenState extends State<ResultScreen> {
     super.didChangeDependencies();
   }
 
+  Widget header(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 128.0),
+            child: Image.asset(
+              Assets.okIcon,
+              cacheHeight: 96,
+              cacheWidth: 96,
+            ),
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 56.0),
+            child: _buildWlcomeText(),
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 24.0),
+            child: _buildNameUser(),
+          ),
+        ),
+        Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 16.0),
+            child: _buildTypeTicket(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget closeIcon(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 168.0,
+          bottom: 36.0,
+        ),
+        child: Image.asset(
+          Assets.closeIcon,
+          cacheHeight: 64,
+          cacheWidth: 64,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: EmptyAppBar(),
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 128.0),
-                  child: Image.asset(
-                    Assets.okIcon,
-                    cacheHeight: 96,
-                    cacheWidth: 96,
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 56.0),
-                  child: _buildWlcomeText(),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 24.0),
-                  child: _buildNameUser(),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                  child: _buildTypeTicket(),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 168.0,
-                    bottom: 36.0,
-                  ),
-                  child: Image.asset(
-                    Assets.closeIcon,
-                    cacheHeight: 64,
-                    cacheWidth: 64,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ));
+      appBar: EmptyAppBar(),
+      body: Container(
+        height: double.maxFinite,
+        child: new Stack(
+          children: <Widget>[
+            new Positioned(
+              child: header(context),
+            ),
+            new Positioned(
+              bottom: 0.0,
+              left: 0,
+              right: 0,
+              child: new Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: closeIcon(context)),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildWlcomeText() {
