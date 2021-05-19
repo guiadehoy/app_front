@@ -2,12 +2,12 @@ import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
-class ResultScreen extends StatefulWidget {
+class ErrorScreen extends StatefulWidget {
   @override
-  _ResultScreenState createState() => _ResultScreenState();
+  _ErrorScreenState createState() => _ErrorScreenState();
 }
 
-class _ResultScreenState extends State<ResultScreen> {
+class _ErrorScreenState extends State<ErrorScreen> {
   @override
   void initState() {
     super.initState();
@@ -69,6 +69,35 @@ class _ResultScreenState extends State<ResultScreen> {
             ],
           ),
         ));
+  }
+
+  Widget _buildRightSide() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Image.asset(
+            Assets.logoQr,
+            cacheHeight: 80,
+            cacheWidth: 80,
+          ),
+          SizedBox(height: 16.0),
+          _buildWlcomeText(),
+          SizedBox(height: 16.0),
+          _buildNameUser(),
+          SizedBox(height: 16.0),
+          _buildTypeTicket(),
+          Image.asset(
+            Assets.logoQr,
+            cacheHeight: 65,
+            cacheWidth: 65,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildWlcomeText() {

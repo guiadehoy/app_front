@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SizedBox(
                 height: 48.0,
                 width: double.infinity, // <-- match_parent
-                child: _buildSignInButton(),
+                child: _buildScanButton(),
               ),
             ),
           ],
@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildSignInButton() {
+  Widget _buildScanButton() {
     return RoundedButtonWidget(
       buttonText: "Escanear entradas",
       fontWeight: FontWeight.bold,

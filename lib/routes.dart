@@ -1,3 +1,4 @@
+import 'package:app_scanner/ui/error_screen.dart';
 import 'package:app_scanner/ui/login_screen.dart';
 import 'package:app_scanner/ui/qr_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
@@ -13,6 +14,7 @@ class Routes {
   static const String splash = '/splash';
   static const String home = '/home';
   static const String result = '/result';
+  static const String error = '/error';
 
   static final routes = <String, WidgetBuilder>{
     login: (BuildContext context) => LoginScreen(),
@@ -20,5 +22,6 @@ class Routes {
     splash: (BuildContext context) => SplashScreen(),
     home: (BuildContext context) => HomeScreen(),
     result: (BuildContext context) => ResultScreen(),
+    error: (BuildContext context) => ErrorScreen(),
   };
 }
