@@ -1,4 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -60,10 +61,21 @@ class _ResultScreenState extends State<ResultScreen> {
           top: 168.0,
           bottom: 36.0,
         ),
-        child: Image.asset(
-          Assets.closeIcon,
-          cacheHeight: 64,
-          cacheWidth: 64,
+        child: GestureDetector(
+          onTap: () {
+            Future.delayed(
+              Duration(milliseconds: 0),
+              () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Routes.qr, (Route<dynamic> route) => false);
+              },
+            );
+          }, // handle your image tap here
+          child: Image.asset(
+            Assets.closeIcon,
+            cacheHeight: 64,
+            cacheWidth: 64,
+          ),
         ),
       ),
     );
