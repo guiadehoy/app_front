@@ -22,11 +22,19 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [Color(0xFF774595), Color(0xFF774595)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight),
+          colors: [
+            Color(0xFF774595),
+            Color(0xFF774595),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
       ),
-      child: Center(child: AppIconWidget(image: Assets.appLogo)),
+      child: Center(
+        child: AppIconWidget(
+          image: Assets.appLogo,
+        ),
+      ),
     );
   }
 

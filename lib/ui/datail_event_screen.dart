@@ -1,5 +1,6 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/routes.dart';
+import 'package:app_scanner/ui/check_qr_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
@@ -151,15 +152,20 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
 
     if (barcodeScanRes == "-1") {
       barcodeScanRes = 'No haz escaneado ningun boleto';
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CheckQrScreen(
+            qrResult: _scanBarcode,
+          ),
+        ),
+      );
     }
 
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ResultScreen()),
-    );
   }
 
   Widget _buildScanButton() {

@@ -15,7 +15,6 @@ class Routes {
   static const String splash = '/splash';
   static const String detail = '/detail';
   static const String result = '/result';
-  static const String error = '/error';
   static const String home = '/home';
 
   static final routes = <String, WidgetBuilder>{
@@ -24,7 +23,6 @@ class Routes {
     splash: (BuildContext context) => SplashScreen(),
     detail: (BuildContext context) => DetailEventScreen(),
     result: (BuildContext context) => ResultScreen(),
-    error: (BuildContext context) => ErrorScreen(),
     home: (BuildContext context) => HomeScreen(),
   };
 }

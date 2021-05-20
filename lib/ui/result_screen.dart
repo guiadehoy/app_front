@@ -1,7 +1,5 @@
 import 'package:app_scanner/constants/assets.dart';
-import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/ui/datail_event_screen.dart';
-import 'package:app_scanner/ui/qr_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 

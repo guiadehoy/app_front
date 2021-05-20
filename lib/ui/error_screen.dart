@@ -3,6 +3,8 @@ import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 class ErrorScreen extends StatefulWidget {
+  late String error;
+  ErrorScreen({required this.error});
   @override
   _ErrorScreenState createState() => _ErrorScreenState();
 }
@@ -44,7 +46,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
               left: 56.0,
               right: 56.0,
             ),
-            child: _buildErrorMessage(),
+            child: _buildErrorMessage(widget.error),
           ),
         ),
       ],
@@ -107,11 +109,11 @@ class _ErrorScreenState extends State<ErrorScreen> {
     );
   }
 
-  Widget _buildErrorMessage() {
+  Widget _buildErrorMessage(String error) {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "El ticket ya ha sido escaneado previamente",
+        error,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 24.0,
