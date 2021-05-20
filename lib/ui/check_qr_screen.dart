@@ -58,12 +58,7 @@ class _CheckQrScreenState extends State<CheckQrScreen>
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
-                Future.delayed(
-                  Duration(milliseconds: 0),
-                  () {
-                    Navigator.of(context).pushNamed(Routes.detail);
-                  },
-                );
+                Navigator.of(context).pushNamed(Routes.detail);
               },
               child: Icon(
                 Icons.close,

@@ -3,7 +3,7 @@ import 'package:app_scanner/ui/login_screen.dart';
 import 'package:app_scanner/ui/qr_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
 import 'package:app_scanner/ui/splash_screen.dart';
-import 'package:app_scanner/ui/datail_event_screen.dart';
+import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {

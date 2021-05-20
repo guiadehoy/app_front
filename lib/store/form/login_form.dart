@@ -81,7 +81,7 @@ abstract class _LoginStore with Store {
 
   @action
   Future login(user, password) async {
-    loading = true;
+    loading = false;
     success = true;
   }
 
@@ -93,6 +93,7 @@ abstract class _LoginStore with Store {
   @action
   Future logout() async {
     success = false;
+    loading = false;
   }
 
   // general methods:-----------------------------------------------------------

@@ -65,7 +65,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
           children: <Widget>[
             _buildLogOut(),
             Padding(
-              padding: EdgeInsets.only(top: 40.0),
+              padding: EdgeInsets.only(top: 20.0),
               child: Image.asset(
                 Assets.logoQr,
                 cacheHeight: 245,

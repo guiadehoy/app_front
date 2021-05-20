@@ -2,6 +2,7 @@ import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ErrorScreen extends StatefulWidget {
   late String error;
   ErrorScreen({required this.error});

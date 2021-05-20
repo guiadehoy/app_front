@@ -1,6 +1,9 @@
 import 'package:app_scanner/routes.dart';
-import 'package:app_scanner/ui/datail_event_screen.dart';
+import 'package:app_scanner/store/form/login_form.dart';
+import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,9 +11,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late LoginStore _loginStore;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _loginStore = Provider.of<LoginStore>(context);
+    super.didChangeDependencies();
   }
 
   final titles = [
@@ -56,22 +67,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          "Listado de eventos",
-          textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Observer(
+          builder: (_) => Text(
+            'Lista de eventos',
+            textAlign: TextAlign.left,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
-                Future.delayed(
-                  Duration(milliseconds: 0),
-                  () {
-                    Navigator.of(context).pushNamed(Routes.login);
-                  },
-                );
+                _loginStore.logout();
+                Navigator.of(context).pushNamed(Routes.login);
               },
               child: Icon(
                 Icons.logout,

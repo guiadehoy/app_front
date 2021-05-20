@@ -55,12 +55,7 @@ class _QrScreenState extends State<QrScreen> {
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
-                Future.delayed(
-                  Duration(milliseconds: 0),
-                  () {
-                    Navigator.of(context).pushNamed(Routes.home);
-                  },
-                );
+                Navigator.of(context).pushNamed(Routes.home);
               },
               child: Icon(
                 Icons.close,

@@ -11,6 +11,7 @@ import 'package:app_scanner/widgets/textfield_widget.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,12 +20,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  //text controllers:-----------------------------------------------------------
   TextEditingController _userEmailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  final _loginStore = LoginStore();
-  //focus node:-----------------------------------------------------------------
+  late LoginStore _loginStore;
   late FocusNode _passwordFocusNode;
 
   @override
@@ -35,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void didChangeDependencies() {
+    _loginStore = Provider.of<LoginStore>(context);
     super.didChangeDependencies();
   }
 
