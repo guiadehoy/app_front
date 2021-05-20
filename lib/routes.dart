@@ -1,4 +1,3 @@
-import 'package:app_scanner/ui/error_screen.dart';
 import 'package:app_scanner/ui/home_screen.dart';
 import 'package:app_scanner/ui/login_screen.dart';
 import 'package:app_scanner/ui/qr_screen.dart';
