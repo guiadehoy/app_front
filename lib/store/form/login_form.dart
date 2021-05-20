@@ -74,9 +74,6 @@ abstract class _LoginStore with Store {
       formErrorStore.password = "La contraseña no puede ser vacía";
     } else if (value.length < 8) {
       formErrorStore.password = "La contraseña debe tener más de 8 caracteres";
-    } else if (!matches(value,
-        r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$")) {
-      formErrorStore.password = "Mensaje de error";
     } else {
       formErrorStore.password = "";
     }
