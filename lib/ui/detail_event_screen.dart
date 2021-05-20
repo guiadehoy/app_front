@@ -32,13 +32,9 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: EmptyAppBar(),
-      body: _buildBody(),
-    );
+    return _buildBody();
   }
 
-  // body methods:--------------------------------------------------------------
   Widget _buildBody() {
     return Material(
       child: Center(
@@ -122,7 +118,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   Widget _buildLogOut() {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(top: 16.0),
+      padding: EdgeInsets.only(top: 32.0),
       child: GestureDetector(
         onTap: () {
           logout(context);
