@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
-
-import '../routes.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

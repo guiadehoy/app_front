@@ -1,4 +1,5 @@
 import 'package:app_scanner/ui/error_screen.dart';
+import 'package:app_scanner/ui/home_screen.dart';
 import 'package:app_scanner/ui/login_screen.dart';
 import 'package:app_scanner/ui/qr_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
@@ -12,16 +13,18 @@ class Routes {
   static const String qr = '/qr';
   static const String login = '/login';
   static const String splash = '/splash';
-  static const String home = '/home';
+  static const String detail = '/detail';
   static const String result = '/result';
   static const String error = '/error';
+  static const String home = '/home';
 
   static final routes = <String, WidgetBuilder>{
     login: (BuildContext context) => LoginScreen(),
     qr: (BuildContext context) => QrScreen(),
     splash: (BuildContext context) => SplashScreen(),
-    home: (BuildContext context) => DetailEventScreen(),
+    detail: (BuildContext context) => DetailEventScreen(),
     result: (BuildContext context) => ResultScreen(),
     error: (BuildContext context) => ErrorScreen(),
+    home: (BuildContext context) => HomeScreen(),
   };
 }

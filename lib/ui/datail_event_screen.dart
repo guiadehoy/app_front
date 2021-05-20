@@ -1,8 +1,11 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/routes.dart';
+import 'package:app_scanner/ui/result_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class DetailEventScreen extends StatefulWidget {
   @override
@@ -10,6 +13,8 @@ class DetailEventScreen extends StatefulWidget {
 }
 
 class _DetailEventScreenState extends State<DetailEventScreen> {
+  String qrCodeResult = "Aún no escaneada";
+  String _scanBarcode = 'Unknown';
   List<Color> _colors = [
     const Color(0xFF774595),
     const Color(0xFF774595),
@@ -116,21 +121,44 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
 
   Widget _buildLogOut() {
     return Container(
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(top: 46.0),
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.only(top: 16.0),
       child: GestureDetector(
         onTap: () {
           logout(context);
         },
-        child: Text(
-          "Cerrar sesión",
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+        child: Icon(
+          Icons.close,
+          color: Colors.white,
+          size: 30.0,
         ),
       ),
+    );
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancelar', true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    if (barcodeScanRes == "-1") {
+      barcodeScanRes = 'No haz escaneado ningun boleto';
+    }
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ResultScreen()),
     );
   }
 
@@ -141,12 +169,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
       buttonColor: Color(0xFFE9E1EE),
       textColor: Theme.of(context).primaryColor,
       onPressed: () async {
-        Future.delayed(
-          Duration(milliseconds: 0),
-          () {
-            Navigator.of(context).pushNamed(Routes.qr);
-          },
-        );
+        scanQR();
       },
     );
   }
@@ -155,7 +178,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     print("cerrar sesión");
     Future.delayed(Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.login, (Route<dynamic> route) => false);
+          Routes.home, (Route<dynamic> route) => false);
     });
   }
 
