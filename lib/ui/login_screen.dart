@@ -113,7 +113,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SizedBox(
                 height: 48.0,
                 width: double.infinity, // <-- match_parent
-                child: _buildSignInButton(),
+                child: Observer(
+                  builder: (_) => _buildSignInButton(),
+                ),
               ),
             ),
           ],
@@ -174,26 +176,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSignInButton() {
     return RoundedButtonWidget(
-      buttonText: "Iniciar sesión",
-      buttonColor: Theme.of(context).primaryColor,
-      textColor: Colors.white,
-      onPressed: () async {
-        if (_loginStore.canLogin) {
-          DeviceUtils.hideKeyboard(context);
-          _loginStore.login(
-              _userEmailController.text, _passwordController.text);
-        } else {
-          BotToast.showSimpleNotification(
-            enableSlideOff: true,
-            backgroundColor: Colors.red,
-            titleStyle: const TextStyle(color: Colors.white),
-            subTitleStyle: const TextStyle(color: Colors.white),
-            title: "title",
-            subTitle: "subTitle",
-          );
-        }
-      },
-    );
+        buttonText: "Iniciar sesión",
+        buttonColor: Theme.of(context).primaryColor,
+        textColor: Colors.white,
+        onPressed: _loginStore.canLogin ? login : null);
+  }
+
+  login() {
+    DeviceUtils.hideKeyboard(context);
+    _loginStore.login(_userEmailController.text, _passwordController.text);
   }
 
   Widget navigate(BuildContext context) {
@@ -209,10 +200,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container();
   }
 
-  // dispose:-------------------------------------------------------------------
   @override
   void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
     _userEmailController.dispose();
     _passwordController.dispose();
     _passwordFocusNode.dispose();
