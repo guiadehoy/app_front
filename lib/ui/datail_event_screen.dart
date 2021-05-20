@@ -1,16 +1,15 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../routes.dart';
-
-class HomeScreen extends StatefulWidget {
+class DetailEventScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _DetailEventScreenState createState() => _DetailEventScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DetailEventScreenState extends State<DetailEventScreen> {
   List<Color> _colors = [
     const Color(0xFF774595),
     const Color(0xFF774595),
