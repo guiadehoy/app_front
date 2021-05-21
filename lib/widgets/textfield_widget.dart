@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final IconData icon;
+  final IconData? suffix;
   final String hint;
   final String label;
   final String errorText;
@@ -16,31 +17,34 @@ class TextFieldWidget extends StatelessWidget {
   final FocusNode? focusNode;
   final ValueChanged? onFieldSubmitted;
   final ValueChanged? onChanged;
+  final VoidCallback? onPressedSuffix;
   final bool autoFocus;
   final TextInputAction inputAction;
   final int maxLength;
 
-  const TextFieldWidget({
-    Key? key,
-    this.icon = Icons.person,
-    this.hint = "",
-    this.errorText = "",
-    this.isObscure = false,
-    this.enabled = true,
-    this.inputType = TextInputType.text,
-    required this.textController,
-    this.label = '',
-    this.isIcon = true,
-    this.padding = const EdgeInsets.all(0),
-    this.hintColor = Colors.grey,
-    this.iconColor = Colors.grey,
-    this.focusNode,
-    this.onFieldSubmitted,
-    this.onChanged,
-    this.maxLength = 25,
-    this.autoFocus = false,
-    this.inputAction = TextInputAction.next,
-  }) : super(key: key);
+  const TextFieldWidget(
+      {Key? key,
+      this.icon = Icons.person,
+      this.hint = "",
+      this.errorText = "",
+      this.isObscure = false,
+      this.enabled = true,
+      this.inputType = TextInputType.text,
+      required this.textController,
+      this.label = '',
+      this.isIcon = false,
+      this.padding = const EdgeInsets.all(0),
+      this.hintColor = Colors.grey,
+      this.iconColor = Colors.grey,
+      this.focusNode,
+      this.onFieldSubmitted,
+      this.onChanged,
+      this.onPressedSuffix,
+      this.maxLength = 25,
+      this.autoFocus = false,
+      this.inputAction = TextInputAction.next,
+      this.suffix})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +61,26 @@ class TextFieldWidget extends StatelessWidget {
         maxLength: this.maxLength,
         keyboardType: this.inputType,
         enabled: enabled,
-        // ignore: deprecated_member_use
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText2,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             labelText: label,
             hintText: this.hint,
-            hintStyle:
-                // ignore: deprecated_member_use
-                Theme.of(context).textTheme.body1!.copyWith(color: hintColor),
+            suffixIcon: suffix != null
+                ? GestureDetector(
+                    onTap: onPressedSuffix,
+                    child: Icon(
+                      Icons.visibility,
+                    ),
+                  )
+                : null,
+            hintStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(color: hintColor),
             errorText: errorText != "" ? errorText : null,
             counterText: '',
-            // ignore: dead_code
-            icon: false ? Icon(this.icon, color: iconColor) : null),
+            icon: isIcon ? Icon(this.icon, color: iconColor) : null),
       ),
     );
   }

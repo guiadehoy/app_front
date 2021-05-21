@@ -24,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late LoginStore _loginStore;
   late FocusNode _passwordFocusNode;
+  late bool isObscure = true;
+  late IconData suffix = Icons.visibility_off;
 
   @override
   void initState() {
@@ -139,9 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
       label: "Correo electrónico",
       hint: "Correo electrónico",
       inputType: TextInputType.emailAddress,
-      icon: Icons.person,
       padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
-      iconColor: Colors.black54,
       textController: _userEmailController,
       inputAction: TextInputAction.next,
       autoFocus: false,
@@ -156,14 +156,30 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  setInputPassword() {
+    setState(() {
+      this.isObscure = !this.isObscure;
+    });
+
+    if (this.isObscure) {
+      setState(() {
+        suffix = Icons.visibility_off;
+      });
+    } else {
+      setState(() {
+        suffix = Icons.visibility;
+      });
+    }
+  }
+
   Widget _buildPasswordField() {
     return TextFieldWidget(
       label: "Contraseña",
       hint: "Contraseña",
-      isObscure: true,
+      isObscure: isObscure,
+      suffix: suffix,
+      onPressedSuffix: () => setInputPassword(),
       padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
-      icon: Icons.lock,
-      iconColor: Colors.black54,
       textController: _passwordController,
       focusNode: _passwordFocusNode,
       errorText: _loginStore.formErrorStore.password,
