@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             debugShowCheckedModeBanner: false,
             title: Strings.appName,
-            initialRoute: Routes.login,
+            initialRoute: Routes.home,
             routes: Routes.routes,
             theme: themeData,
           );

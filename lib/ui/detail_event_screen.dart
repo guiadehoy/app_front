@@ -120,7 +120,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
       padding: EdgeInsets.only(top: 32.0),
       child: GestureDetector(
         onTap: () {
-          logout(context);
+          _returnToHome(context);
         },
         child: Icon(
           Icons.close,
@@ -174,8 +174,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     );
   }
 
-  void logout(BuildContext context) {
-    print("cerrar sesión");
+  void _returnToHome(BuildContext context) {
     Future.delayed(Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
           Routes.home, (Route<dynamic> route) => false);
