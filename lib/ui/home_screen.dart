@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/models/event_list.dart';
+import 'package:app_scanner/models/event_response.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
@@ -54,15 +55,16 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                  child: Text(
-                "Eventos del día",
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 20.0,
-                  letterSpacing: -0.4,
-                  fontWeight: FontWeight.bold,
+                child: Text(
+                  "Eventos del día",
+                  style: TextStyle(
+                    color: Color(0xFF333333),
+                    fontSize: 20.0,
+                    letterSpacing: -0.4,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )),
+              ),
               Container(
                 child: Image.asset(
                   Assets.logoutIcon,
@@ -79,22 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemCount: eventList.events.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailEventScreen()),
-                      );
-                    },
-                    title: Text(eventList.events[index].name),
-                    subtitle: Text(eventList.events[index].hourLabel),
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(eventList.events[index].image),
-                    ),
-                  ),
+                return CardEvent(
+                  event: eventList.events[index],
                 );
               },
             ),
@@ -229,6 +217,64 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               );
       },
+    );
+  }
+}
+
+class CardEvent extends StatelessWidget {
+  const CardEvent({
+    Key? key,
+    required this.event,
+  }) : super(key: key);
+
+  final EventResponse event;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0.5,
+      child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DetailEventScreen()),
+          );
+        },
+        title: Text(
+          event.name,
+          style: TextStyle(
+            color: Color(0xFF333333),
+            fontSize: 20.0,
+            letterSpacing: -0.4,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Container(
+          height: 60,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 8.0),
+              Text(event.hourLabel),
+              SizedBox(height: 8.0),
+              Text(event.scannedQrLabel)
+            ],
+          ),
+        ),
+        leading: Container(
+          height: 80,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: 72.0,
+              minHeight: 72.0,
+              maxWidth: 72.0,
+              maxHeight: 72.0,
+            ),
+            child: Image.network(event.image, fit: BoxFit.cover),
+          ),
+        ),
+      ),
     );
   }
 }
