@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/models/event_list.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:app_scanner/utils/api_client.dart';
+import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,56 +40,77 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Lista de eventos',
-          textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () => _buildloguotAlert(),
-              child: Icon(
-                Icons.logout,
-                size: 26.0,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: EmptyAppBar(),
       body: body(),
+    );
+  }
+
+  Widget listAndTitle() {
+    return Column(
+      children: <Widget>[
+        Container(
+          color: Colors.white,
+          height: 40.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.only(
+                    left: 16.0,
+                  ),
+                  child: Text(
+                    "Eventos del día",
+                    style: TextStyle(
+                      color: Color(0xFF333333),
+                      fontSize: 20.0,
+                      letterSpacing: -0.4,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
+              Container(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Image.asset(
+                  Assets.logoutIcon,
+                  cacheHeight: 24,
+                  cacheWidth: 24,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: eventList.events.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailEventScreen()),
+                    );
+                  },
+                  title: Text(eventList.events[index].name),
+                  subtitle: Text(eventList.events[index].hourLabel),
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(eventList.events[index].image),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
   Widget body() {
     return loading
         ? Container(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: ListView.builder(
-                itemCount: eventList.events.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailEventScreen()),
-                        );
-                      },
-                      title: Text(eventList.events[index].name),
-                      subtitle: Text(eventList.events[index].hourLabel),
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(eventList.events[index].image),
-                      ),
-                    ),
-                  );
-                }),
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: listAndTitle(),
           )
         : CircularProgressIndicator.adaptive();
   }
