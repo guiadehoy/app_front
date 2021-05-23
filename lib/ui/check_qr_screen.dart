@@ -99,28 +99,29 @@ class _CheckQrScreenState extends State<CheckQrScreen>
 
   void handleTap() {
     BotToast.showCustomText(
-        onlyOne: true,
-        duration: null,
-        toastBuilder: (textCancel) => Align(
-              alignment: Alignment(0, 0.8),
-              child: Card(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.favorite,
-                        color: Colors.redAccent,
-                      ),
-                      onPressed: () {
-                        textCancel();
-                      },
-                    ),
-                  ],
+      onlyOne: true,
+      duration: null,
+      toastBuilder: (textCancel) => Align(
+        alignment: Alignment(0, 0.8),
+        child: Card(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.favorite,
+                  color: Colors.redAccent,
                 ),
+                onPressed: () {
+                  textCancel();
+                },
               ),
-            ));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

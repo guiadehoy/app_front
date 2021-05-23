@@ -1,17 +1,22 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/constants/preferences.dart';
+import 'package:app_scanner/models/login_response.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
+import 'package:app_scanner/utils/api_client.dart';
 import 'package:app_scanner/utils/device_utils.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:app_scanner/widgets/textfield_widget.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late FocusNode _passwordFocusNode;
   late bool isObscure = true;
   late IconData suffix = Icons.visibility_off;
+  late Client _client = Client();
 
   @override
   void initState() {
@@ -197,9 +203,11 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: _loginStore.canLogin ? login : null);
   }
 
-  login() {
+  login() async {
     DeviceUtils.hideKeyboard(context);
-    _loginStore.login(_userEmailController.text, _passwordController.text);
+    LoginResponse response =
+        await loginService(_userEmailController.text, _passwordController.text);
+    print(response.accessToken);
   }
 
   Widget navigate(BuildContext context) {
@@ -216,6 +224,43 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Container();
+  }
+
+  Future<LoginResponse> loginService(email, password) async {
+    try {
+      final response = await _client.init().post('/scanner/auth/login',
+          data: {"email": email, "password": password});
+      _loginStore.login();
+      return LoginResponse.fromJson(response.data);
+    } on DioError catch (ex) {
+      _loginStore.logout();
+      String errorMessage = json.decode(ex.response.toString())["message"];
+      BotToast.showNotification(
+        leading: (cancel) => SizedBox.fromSize(
+          size: const Size(40, 40),
+          child: IconButton(
+            icon: Icon(Icons.error, color: Colors.redAccent),
+            onPressed: cancel,
+          ),
+        ),
+        title: (_) => Text('Error'),
+        subtitle: (_) => Text(errorMessage),
+        trailing: (cancel) => IconButton(
+          icon: Icon(Icons.cancel),
+          onPressed: cancel,
+        ),
+        onTap: () {},
+        onLongPress: () {},
+        enableSlideOff: true,
+        contentPadding: EdgeInsets.all(0.0),
+        onlyOne: true,
+        animationDuration: Duration(milliseconds: 500),
+        animationReverseDuration: Duration(milliseconds: 500),
+        duration: Duration(seconds: 4),
+      );
+
+      throw new Exception(errorMessage);
+    }
   }
 
   @override

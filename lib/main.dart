@@ -18,17 +18,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  // Create your store as a final variable in a base Widget. This works better
-  // with Hot Reload than creating it directly in the `build` function.
   final LoginStore _loginStore = LoginStore();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        Provider<LoginStore>(create: (_) => _loginStore),
-      ],
+      providers: [Provider<LoginStore>(create: (_) => _loginStore)],
       child: Observer(
         name: 'global-observer',
         builder: (context) {
@@ -37,7 +32,7 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             debugShowCheckedModeBanner: false,
             title: Strings.appName,
-            initialRoute: Routes.home,
+            initialRoute: Routes.splash,
             routes: Routes.routes,
             theme: themeData,
           );

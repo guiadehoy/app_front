@@ -80,7 +80,7 @@ abstract class _LoginStore with Store {
   }
 
   @action
-  Future login(user, password) async {
+  Future login() async {
     loading = false;
     success = true;
   }
