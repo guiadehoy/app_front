@@ -88,10 +88,10 @@ class _ResultScreenState extends State<ResultScreen> {
         height: double.maxFinite,
         child: new Stack(
           children: <Widget>[
-            new Positioned(
+            Positioned(
               child: header(context),
             ),
-            new Positioned(
+            Positioned(
               bottom: 0.0,
               left: 0,
               right: 0,

@@ -60,22 +60,33 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _buildLogOut(),
             Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Image.asset(
-                Assets.logoQr,
-                cacheHeight: 194,
-                cacheWidth: 194,
+              padding: EdgeInsets.only(top: 70.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.arrow_back),
+                  Text(
+                    _loginStore.eventSelected!.name,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                ],
               ),
+            ),
+            Image.asset(
+              Assets.logoQr,
+              cacheHeight: 172,
+              cacheWidth: 172,
             ),
             SizedBox(height: 16.0),
             _buildTCounter(),
             SizedBox(height: 16.0),
             _buildTitleScaner(),
-            SizedBox(height: 16.0),
             Padding(
-              padding: EdgeInsets.only(top: 24.0),
+              padding: EdgeInsets.only(top: 100.0),
               child: SizedBox(
                 height: 48.0,
                 width: double.infinity, // <-- match_parent
@@ -92,7 +103,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        _loginStore.eventSelected!.name,
+        "1920",
         style: TextStyle(
           fontSize: 40.0,
           fontWeight: FontWeight.w600,
@@ -126,7 +137,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
         },
         child: Icon(
           Icons.close,
-          color: Colors.white,
+          color: Colors.black,
           size: 30.0,
         ),
       ),
