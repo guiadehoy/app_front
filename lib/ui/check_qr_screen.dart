@@ -40,7 +40,6 @@ class _CheckQrScreenState extends State<CheckQrScreen>
   @override
   void dispose() {
     animationController.dispose();
-    readQr(widget.qrResult);
     super.dispose();
   }
 

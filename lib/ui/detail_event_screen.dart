@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/models/qr_response.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
-import 'package:app_scanner/ui/check_qr_screen.dart';
 import 'package:app_scanner/ui/error_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
 import 'package:app_scanner/utils/api_client.dart';
@@ -17,8 +17,11 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class DetailEventScreen extends StatefulWidget {
+  late bool? openQr = false;
+
   DetailEventScreen({
     Key? key,
+    this.openQr,
   }) : super(key: key);
 
   @override
@@ -27,14 +30,20 @@ class DetailEventScreen extends StatefulWidget {
 
 class _DetailEventScreenState extends State<DetailEventScreen> {
   String qrCodeResult = "Aún no escaneada";
-  String _scanBarcode = 'Unknown';
   late Client _client = Client();
+  late bool loading = true;
 
   late LoginStore _loginStore;
 
   @override
   void initState() {
     super.initState();
+    bool? dataRead = widget.openQr;
+    if (dataRead != null && dataRead) {
+      startTimer();
+      scanQR();
+    }
+    startTimer();
   }
 
   @override
@@ -47,7 +56,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     print(qr);
     try {
       final response =
-          await _client.init().post('/scanner/qr', data: {"qr": qr});
+          await _client.init().post('/scanner/qr', data: {"code": 500});
       late QrResponse data = QrResponse.fromJson(response.data);
       Navigator.push(
         context,
@@ -57,9 +66,6 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
           ),
         ),
       );
-      print(data.name);
-      print(data.typeTicket);
-      print(data.message);
 
       return data;
     } on DioError catch (ex) {
@@ -85,9 +91,24 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   Widget _buildBody() {
     return Material(
       child: Center(
-        child: _buildRightSide(),
+        child: this.loading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : _buildRightSide(),
       ),
     );
+  }
+
+  startTimer() {
+    var _duration = Duration(milliseconds: 1000);
+    return Timer(_duration, setLoading);
+  }
+
+  setLoading() {
+    setState(() {
+      this.loading = false;
+    });
   }
 
   Widget _buildRightSide() {
@@ -214,22 +235,10 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     if (barcodeScanRes == "-1") {
       barcodeScanRes = 'No haz escaneado ningun boleto';
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CheckQrScreen(
-            qrResult: _scanBarcode,
-          ),
-        ),
-      );
+      final QrResponse data = await readQr(barcodeScanRes);
+      print(data.name);
     }
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
-
-    final QrResponse data = await readQr(barcodeScanRes);
-    print(data.name);
+    setState(() {});
   }
 
   Widget _buildScanButton() {

@@ -4,6 +4,7 @@ import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ResultScreen extends StatefulWidget {
   late QrResponse qrResponse;
   ResultScreen({required this.qrResponse});
@@ -70,7 +71,9 @@ class _ResultScreenState extends State<ResultScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailEventScreen(),
+                builder: (context) => DetailEventScreen(
+                  openQr: true,
+                ),
               ),
             );
           }, // handle your image tap here
