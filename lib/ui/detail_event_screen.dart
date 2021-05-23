@@ -6,7 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+// ignore: must_be_immutable
 class DetailEventScreen extends StatefulWidget {
+  int id;
+  DetailEventScreen({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+
   @override
   _DetailEventScreenState createState() => _DetailEventScreenState();
 }
@@ -21,6 +28,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
 
   @override
   void initState() {
+    print(widget.id);
     super.initState();
   }
 

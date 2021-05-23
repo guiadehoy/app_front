@@ -65,7 +65,11 @@ class _ResultScreenState extends State<ResultScreen> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DetailEventScreen()),
+              MaterialPageRoute(
+                builder: (context) => DetailEventScreen(
+                  id: 0,
+                ),
+              ),
             );
           }, // handle your image tap here
           child: Image.asset(

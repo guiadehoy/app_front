@@ -1,3 +1,4 @@
+import 'package:app_scanner/models/event_response.dart';
 import 'package:app_scanner/store/error/error_store.dart';
 import 'package:mobx/mobx.dart';
 import 'package:validators/validators.dart';
@@ -40,6 +41,9 @@ abstract class _LoginStore with Store {
   @observable
   bool loading = false;
 
+  @observable
+  EventResponse? eventSelected;
+
   @computed
   bool get canLogin =>
       !formErrorStore.hasErrorsInLogin &&
@@ -55,6 +59,11 @@ abstract class _LoginStore with Store {
   @action
   void setPassword(String value) {
     password = value;
+  }
+
+  @action
+  void setEventSelected(EventResponse value) {
+    eventSelected = value;
   }
 
   @action

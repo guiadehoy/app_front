@@ -76,6 +76,21 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$eventSelectedAtom = Atom(name: '_LoginStore.eventSelected');
+
+  @override
+  EventResponse? get eventSelected {
+    _$eventSelectedAtom.reportRead();
+    return super.eventSelected;
+  }
+
+  @override
+  set eventSelected(EventResponse? value) {
+    _$eventSelectedAtom.reportWrite(value, super.eventSelected, () {
+      super.eventSelected = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('_LoginStore.login');
 
   @override
@@ -122,6 +137,17 @@ mixin _$LoginStore on _LoginStore, Store {
   }
 
   @override
+  void setEventSelected(EventResponse value) {
+    final _$actionInfo = _$_LoginStoreActionController.startAction(
+        name: '_LoginStore.setEventSelected');
+    try {
+      return super.setEventSelected(value);
+    } finally {
+      _$_LoginStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void validateUserEmail(String value) {
     final _$actionInfo = _$_LoginStoreActionController.startAction(
         name: '_LoginStore.validateUserEmail');
@@ -150,6 +176,7 @@ userEmail: ${userEmail},
 password: ${password},
 success: ${success},
 loading: ${loading},
+eventSelected: ${eventSelected},
 canLogin: ${canLogin}
     ''';
   }

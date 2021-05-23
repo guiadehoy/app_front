@@ -66,10 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                child: Image.asset(
-                  Assets.logoutIcon,
-                  cacheHeight: 24,
-                  cacheWidth: 24,
+                child: GestureDetector(
+                  child: Image.asset(
+                    Assets.logoutIcon,
+                    cacheHeight: 24,
+                    cacheWidth: 24,
+                  ),
+                  onTap: () => _buildloguotAlert(),
                 ),
               ),
             ],
@@ -82,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: eventList.events.length,
               itemBuilder: (context, index) {
                 return CardEvent(
+                  loginStore: _loginStore,
                   event: eventList.events[index],
                 );
               },
@@ -120,9 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return eventListData;
     } on DioError catch (ex) {
       String errorMessage = json.decode(ex.response.toString())["message"];
+
       setState(() {
         loading = true;
       });
+
       BotToast.showNotification(
         leading: (cancel) => SizedBox.fromSize(
           size: const Size(40, 40),
@@ -225,9 +231,11 @@ class CardEvent extends StatelessWidget {
   const CardEvent({
     Key? key,
     required this.event,
+    required this.loginStore,
   }) : super(key: key);
 
   final EventResponse event;
+  final LoginStore loginStore;
 
   @override
   Widget build(BuildContext context) {
@@ -235,9 +243,14 @@ class CardEvent extends StatelessWidget {
       elevation: 0.5,
       child: ListTile(
         onTap: () {
+          loginStore.setEventSelected(event);
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DetailEventScreen()),
+            MaterialPageRoute(
+              builder: (context) => DetailEventScreen(
+                id: event.id,
+              ),
+            ),
           );
         },
         title: Text(
@@ -256,22 +269,48 @@ class CardEvent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 8.0),
-              Text(event.hourLabel),
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 6.0),
+                    child: Image.asset(
+                      Assets.clockIcon,
+                      width: 16.0,
+                      height: 16.0,
+                    ),
+                  ),
+                  Text(
+                    event.hourLabel,
+                  ),
+                ],
+              ),
               SizedBox(height: 8.0),
-              Text(event.scannedQrLabel)
+              Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(right: 6.0),
+                    child: Image.asset(
+                      Assets.ticketIcon,
+                      width: 16.0,
+                      height: 16.0,
+                    ),
+                  ),
+                  Text(
+                    event.scannedQrLabel,
+                  )
+                ],
+              ),
             ],
           ),
         ),
         leading: Container(
-          height: 80,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: 72.0,
-              minHeight: 72.0,
-              maxWidth: 72.0,
-              maxHeight: 72.0,
+          child: SizedBox(
+            height: 72.0,
+            width: 72.0,
+            child: Image.network(
+              event.image,
+              fit: BoxFit.cover,
             ),
-            child: Image.network(event.image, fit: BoxFit.cover),
           ),
         ),
       ),
