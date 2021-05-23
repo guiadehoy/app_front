@@ -40,8 +40,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     super.initState();
     bool? dataRead = widget.openQr;
     if (dataRead != null && dataRead) {
-      startTimer();
-      scanQR();
+      startTimercAndScan();
     }
     startTimer();
   }
@@ -53,10 +52,12 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   }
 
   Future<QrResponse> readQr(qr) async {
-    print(qr);
     try {
-      final response =
-          await _client.init().post('/scanner/qr', data: {"code": 500});
+      final response = await _client.init().post('/scanner/qr', data: {
+        "code": 200,
+        "qr": qr,
+        "id_event": _loginStore.eventSelected!.id
+      });
       late QrResponse data = QrResponse.fromJson(response.data);
       Navigator.push(
         context,
@@ -105,10 +106,19 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     return Timer(_duration, setLoading);
   }
 
+  startTimercAndScan() {
+    var _duration = Duration(milliseconds: 1000);
+    return Timer(_duration, setLoadingScan);
+  }
+
   setLoading() {
     setState(() {
       this.loading = false;
     });
+  }
+
+  setLoadingScan() async {
+    await scanQR();
   }
 
   Widget _buildRightSide() {
@@ -238,7 +248,11 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
       final QrResponse data = await readQr(barcodeScanRes);
       print(data.name);
     }
-    setState(() {});
+    if (widget.openQr != null && widget.openQr == true) {
+      setState(() {
+        this.loading = false;
+      });
+    }
   }
 
   Widget _buildScanButton() {

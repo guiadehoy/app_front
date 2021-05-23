@@ -102,7 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: listAndTitle(),
           )
-        : CircularProgressIndicator.adaptive();
+        : Center(
+            child: CircularProgressIndicator(),
+          );
   }
 
   Future<EventList> fetchEvents() async {
