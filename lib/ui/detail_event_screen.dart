@@ -1,17 +1,17 @@
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/routes.dart';
+import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/check_qr_screen.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class DetailEventScreen extends StatefulWidget {
-  int id;
   DetailEventScreen({
     Key? key,
-    required this.id,
   }) : super(key: key);
 
   @override
@@ -21,19 +21,17 @@ class DetailEventScreen extends StatefulWidget {
 class _DetailEventScreenState extends State<DetailEventScreen> {
   String qrCodeResult = "Aún no escaneada";
   String _scanBarcode = 'Unknown';
-  List<Color> _colors = [
-    const Color(0xFF774595),
-    const Color(0xFF774595),
-  ];
+
+  late LoginStore _loginStore;
 
   @override
   void initState() {
-    print(widget.id);
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
+    _loginStore = Provider.of<LoginStore>(context);
     super.didChangeDependencies();
   }
 
@@ -53,11 +51,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   Widget _buildRightSide() {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: _colors,
-        ),
+        color: Colors.white,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
@@ -71,8 +65,8 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
               padding: EdgeInsets.only(top: 20.0),
               child: Image.asset(
                 Assets.logoQr,
-                cacheHeight: 245,
-                cacheWidth: 245,
+                cacheHeight: 194,
+                cacheWidth: 194,
               ),
             ),
             SizedBox(height: 16.0),
@@ -98,11 +92,11 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "0",
+        _loginStore.eventSelected!.name,
         style: TextStyle(
           fontSize: 40.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
         ),
       ),
     );
@@ -116,7 +110,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
         style: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.w600,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
     );
@@ -174,8 +168,8 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     return RoundedButtonWidget(
       buttonText: "Escanear entradas",
       fontWeight: FontWeight.bold,
-      buttonColor: Color(0xFFE9E1EE),
-      textColor: Theme.of(context).primaryColor,
+      buttonColor: Theme.of(context).primaryColor,
+      textColor: Color(0xFFE9E1EE),
       onPressed: () async {
         scanQR();
       },

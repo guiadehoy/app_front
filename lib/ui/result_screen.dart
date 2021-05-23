@@ -66,9 +66,7 @@ class _ResultScreenState extends State<ResultScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailEventScreen(
-                  id: 0,
-                ),
+                builder: (context) => DetailEventScreen(),
               ),
             );
           }, // handle your image tap here
@@ -98,8 +96,9 @@ class _ResultScreenState extends State<ResultScreen> {
               left: 0,
               right: 0,
               child: new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: closeIcon(context)),
+                alignment: FractionalOffset.bottomCenter,
+                child: closeIcon(context),
+              ),
             )
           ],
         ),

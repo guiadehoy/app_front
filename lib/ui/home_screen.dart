@@ -247,9 +247,7 @@ class CardEvent extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailEventScreen(
-                id: event.id,
-              ),
+              builder: (context) => DetailEventScreen(),
             ),
           );
         },
