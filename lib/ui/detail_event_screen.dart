@@ -64,15 +64,41 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
               padding: EdgeInsets.only(top: 70.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.arrow_back),
-                  Text(
-                    _loginStore.eventSelected!.name,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.4,
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      child: Icon(
+                        Icons.arrow_back,
+                        size: 24,
+                        color: const Color(0xFF7E7E7E),
+                      ),
+                      onTap: () {
+                        _returnToHome();
+                      },
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 16.0, top: 20.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          _loginStore.eventSelected!.name,
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        Text(
+                          _loginStore.eventSelected!.hourLabel,
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -127,23 +153,6 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     );
   }
 
-  Widget _buildLogOut() {
-    return Container(
-      alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(top: 32.0),
-      child: GestureDetector(
-        onTap: () {
-          _returnToHome(context);
-        },
-        child: Icon(
-          Icons.close,
-          color: Colors.black,
-          size: 30.0,
-        ),
-      ),
-    );
-  }
-
   Future<void> scanQR() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -187,7 +196,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     );
   }
 
-  void _returnToHome(BuildContext context) {
+  void _returnToHome() {
     Future.delayed(Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
           Routes.home, (Route<dynamic> route) => false);
