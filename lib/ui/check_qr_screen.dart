@@ -1,5 +1,10 @@
-import 'package:app_scanner/routes.dart';
-import 'package:bot_toast/bot_toast.dart';
+import 'dart:convert';
+
+import 'package:app_scanner/models/qr_response.dart';
+import 'package:app_scanner/ui/error_screen.dart';
+import 'package:app_scanner/ui/result_screen.dart';
+import 'package:app_scanner/utils/api_client.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class CheckQrScreen extends StatefulWidget {
@@ -13,6 +18,7 @@ class CheckQrScreen extends StatefulWidget {
 class _CheckQrScreenState extends State<CheckQrScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
+  late Client _client = Client();
 
   @override
   void initState() {
@@ -34,6 +40,7 @@ class _CheckQrScreenState extends State<CheckQrScreen>
   @override
   void dispose() {
     animationController.dispose();
+    readQr(widget.qrResult);
     super.dispose();
   }
 
@@ -49,11 +56,11 @@ class _CheckQrScreenState extends State<CheckQrScreen>
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          "Escanear entradas",
+          "Validando información",
           textAlign: TextAlign.left,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: <Widget>[
+        /* actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -67,61 +74,57 @@ class _CheckQrScreenState extends State<CheckQrScreen>
               ),
             ),
           ),
-        ],
+        ],*/
       ),
-      body: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FadeTransition(
-                opacity: animationController,
-                child: IconButton(
-                  icon: Icon(Icons.favorite, color: Colors.redAccent, size: 30),
-                  onPressed: handleTap,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Loading",
-                ),
-              )
-            ],
+      body: Center(
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            alignment: Alignment.center,
+            height: 50,
+            width: 250,
+            child: Text(
+              "Cargando información de QR",
+            ),
           ),
         ),
       ),
     );
   }
 
-  void handleTap() {
-    BotToast.showCustomText(
-      onlyOne: true,
-      duration: null,
-      toastBuilder: (textCancel) => Align(
-        alignment: Alignment(0, 0.8),
-        child: Card(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.favorite,
-                  color: Colors.redAccent,
-                ),
-                onPressed: () {
-                  textCancel();
-                },
-              ),
-            ],
+  Future<QrResponse> readQr(qr) async {
+    print(qr);
+    try {
+      final response =
+          await _client.init().post('/scanner/qr', data: {"qr": qr});
+      late QrResponse data = QrResponse.fromJson(response.data);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            qrResponse: data,
           ),
         ),
-      ),
-    );
+      );
+      print(data.name);
+      print(data.typeTicket);
+      print(data.message);
+
+      return data;
+    } on DioError catch (ex) {
+      String errorMessage = json.decode(ex.response.toString())["message"];
+      print(errorMessage);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ErrorScreen(
+            error: errorMessage,
+          ),
+        ),
+      );
+      throw new Exception(errorMessage);
+    }
   }
 }

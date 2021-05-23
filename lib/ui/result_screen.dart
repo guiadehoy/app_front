@@ -1,9 +1,13 @@
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/models/qr_response.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatefulWidget {
+  late QrResponse qrResponse;
+  ResultScreen({required this.qrResponse});
+
   @override
   _ResultScreenState createState() => _ResultScreenState();
 }
@@ -125,7 +129,7 @@ class _ResultScreenState extends State<ResultScreen> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "Carlos Galaviz",
+        widget.qrResponse.name,
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 40.0,
@@ -141,7 +145,7 @@ class _ResultScreenState extends State<ResultScreen> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "Ticket: Entrada general",
+        'Ticket: ${widget.qrResponse.typeTicket}',
         style: TextStyle(
           fontSize: 18.0,
           fontWeight: FontWeight.bold,

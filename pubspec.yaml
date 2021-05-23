@@ -66,8 +66,13 @@ flutter:
   fonts:
   - family: Rubik
     fonts:
-    - asset: assets/fonts/Rubik-Italic-VariableFont_wght.ttf
-    - asset: assets/fonts/Rubik-VariableFont_wght.ttf
+    - asset: assets/fonts/Rubik-Regular.ttf
+    - asset: assets/fonts/Rubik-Light.ttf
+      weight: 300
+    - asset: assets/fonts/Rubik-Medium.ttf
+      weight: 500
+    - asset: assets/fonts/Rubik-SemiBold.ttf
+      weight: 600
 
 
   # For details regarding fonts from package dependencies,

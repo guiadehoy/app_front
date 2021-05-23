@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/models/qr_response.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/check_qr_screen.dart';
+import 'package:app_scanner/ui/error_screen.dart';
+import 'package:app_scanner/ui/result_screen.dart';
+import 'package:app_scanner/utils/api_client.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -21,6 +28,7 @@ class DetailEventScreen extends StatefulWidget {
 class _DetailEventScreenState extends State<DetailEventScreen> {
   String qrCodeResult = "Aún no escaneada";
   String _scanBarcode = 'Unknown';
+  late Client _client = Client();
 
   late LoginStore _loginStore;
 
@@ -33,6 +41,40 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   void didChangeDependencies() {
     _loginStore = Provider.of<LoginStore>(context);
     super.didChangeDependencies();
+  }
+
+  Future<QrResponse> readQr(qr) async {
+    print(qr);
+    try {
+      final response =
+          await _client.init().post('/scanner/qr', data: {"qr": qr});
+      late QrResponse data = QrResponse.fromJson(response.data);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            qrResponse: data,
+          ),
+        ),
+      );
+      print(data.name);
+      print(data.typeTicket);
+      print(data.message);
+
+      return data;
+    } on DioError catch (ex) {
+      String errorMessage = json.decode(ex.response.toString())["message"];
+      print(errorMessage);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ErrorScreen(
+            error: errorMessage,
+          ),
+        ),
+      );
+      throw new Exception(errorMessage);
+    }
   }
 
   @override
@@ -54,14 +96,17 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
         color: Colors.white,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+          vertical: 0,
+        ),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: 70.0),
+              padding: EdgeInsets.only(top: 20.0),
               child: Row(
                 children: <Widget>[
                   Align(
@@ -104,8 +149,8 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
             ),
             Image.asset(
               Assets.logoQr,
-              cacheHeight: 172,
-              cacheWidth: 172,
+              cacheHeight: 194,
+              cacheWidth: 192,
             ),
             SizedBox(height: 16.0),
             _buildTCounter(),
@@ -182,6 +227,9 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
+
+    final QrResponse data = await readQr(barcodeScanRes);
+    print(data.name);
   }
 
   Widget _buildScanButton() {
