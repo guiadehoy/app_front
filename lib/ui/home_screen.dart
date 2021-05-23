@@ -49,26 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: <Widget>[
         Container(
-          color: Colors.white,
-          height: 40.0,
+          height: 50.0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                  padding: EdgeInsets.only(
-                    left: 16.0,
-                  ),
                   child: Text(
-                    "Eventos del día",
-                    style: TextStyle(
-                      color: Color(0xFF333333),
-                      fontSize: 20.0,
-                      letterSpacing: -0.4,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
+                "Eventos del día",
+                style: TextStyle(
+                  color: Color(0xFF333333),
+                  fontSize: 20.0,
+                  letterSpacing: -0.4,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
               Container(
-                padding: EdgeInsets.only(right: 16.0),
                 child: Image.asset(
                   Assets.logoutIcon,
                   cacheHeight: 24,
@@ -79,27 +74,30 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: eventList.events.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailEventScreen()),
-                    );
-                  },
-                  title: Text(eventList.events[index].name),
-                  subtitle: Text(eventList.events[index].hourLabel),
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(eventList.events[index].image),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.0),
+            child: ListView.builder(
+              itemCount: eventList.events.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailEventScreen()),
+                      );
+                    },
+                    title: Text(eventList.events[index].name),
+                    subtitle: Text(eventList.events[index].hourLabel),
+                    leading: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(eventList.events[index].image),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ],
