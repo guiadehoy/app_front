@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_scanner/models/event_list.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
+import 'package:app_scanner/utils/api_client.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +19,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late LoginStore _loginStore;
+  late Client _client = Client();
+  late EventList eventList;
+  late bool loading = true;
 
   @override
   void initState() {
     super.initState();
+    fetchEvents();
   }
 
   @override
@@ -25,44 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _loginStore = Provider.of<LoginStore>(context);
     super.didChangeDependencies();
   }
-
-  final titles = [
-    "Evento 1",
-    "Evento 2",
-    "Evento 3",
-    "Evento 1",
-    "Evento 2",
-    "Evento 3" "Evento 1",
-    "Evento 2",
-    "Evento 3" "Evento 1",
-    "Evento 2",
-    "Evento 3" "Evento 1",
-    "Evento 2",
-    "Evento 3" "Evento 1",
-    "Evento 2",
-    "Evento 3"
-  ];
-  final subtitles = [
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-    "25 de abril 06:00 am",
-  ];
-  final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
 
   @override
   Widget build(BuildContext context) {
@@ -88,31 +59,87 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        child: ListView.builder(
-            itemCount: titles.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailEventScreen()),
-                    );
-                  },
-                  title: Text(titles[index]),
-                  subtitle: Text(subtitles[index]),
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://images.unsplash.com/photo-1547721064-da6cfb341d50"),
-                  ),
-                ),
-              );
-            }),
-      ),
+      body: body(),
     );
+  }
+
+  Widget body() {
+    return loading
+        ? Container(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: ListView.builder(
+                itemCount: eventList.events.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailEventScreen()),
+                        );
+                      },
+                      title: Text(eventList.events[index].name),
+                      subtitle: Text(eventList.events[index].hourLabel),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(eventList.events[index].image),
+                      ),
+                    ),
+                  );
+                }),
+          )
+        : CircularProgressIndicator.adaptive();
+  }
+
+  Future<EventList> fetchEvents() async {
+    try {
+      setState(() {
+        loading = false;
+      });
+
+      final response = await _client.init().get('/scanner/events/user');
+      var eventListData = EventList.fromJson(response.data);
+      setState(() {
+        this.eventList = eventListData;
+      });
+
+      setState(() {
+        loading = true;
+      });
+
+      return eventListData;
+    } on DioError catch (ex) {
+      String errorMessage = json.decode(ex.response.toString())["message"];
+      setState(() {
+        loading = true;
+      });
+      BotToast.showNotification(
+        leading: (cancel) => SizedBox.fromSize(
+          size: const Size(40, 40),
+          child: IconButton(
+            icon: Icon(Icons.error, color: Colors.redAccent),
+            onPressed: cancel,
+          ),
+        ),
+        title: (_) => Text('Error'),
+        subtitle: (_) => Text(errorMessage),
+        trailing: (cancel) => IconButton(
+          icon: Icon(Icons.cancel),
+          onPressed: cancel,
+        ),
+        onTap: () {},
+        onLongPress: () {},
+        enableSlideOff: true,
+        contentPadding: EdgeInsets.all(0.0),
+        onlyOne: true,
+        animationDuration: Duration(milliseconds: 500),
+        animationReverseDuration: Duration(milliseconds: 500),
+        duration: Duration(seconds: 4),
+      );
+
+      throw new Exception(errorMessage);
+    }
   }
 
   _buildloguotAlert() async {
