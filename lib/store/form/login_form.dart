@@ -47,6 +47,9 @@ abstract class _LoginStore with Store {
   @observable
   String devideId = "";
 
+  @observable
+  int countScanned = 0;
+
   @computed
   bool get canLogin =>
       !formErrorStore.hasErrorsInLogin &&
@@ -61,6 +64,11 @@ abstract class _LoginStore with Store {
   @action
   void setDeviceId(String value) {
     devideId = value;
+  }
+
+  @action
+  void setCountScanned(int value) {
+    countScanned = value;
   }
 
   @action

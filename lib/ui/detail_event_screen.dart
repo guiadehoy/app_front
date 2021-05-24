@@ -8,11 +8,13 @@ import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/error_screen.dart';
 import 'package:app_scanner/ui/result_screen.dart';
 import 'package:app_scanner/utils/api_client.dart';
+import 'package:app_scanner/utils/preferences.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -36,6 +38,12 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   late LoginStore _loginStore;
 
   @override
+  void didChangeDependencies() {
+    _loginStore = Provider.of<LoginStore>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   void initState() {
     super.initState();
     bool? dataRead = widget.openQr;
@@ -43,12 +51,6 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
       startTimercAndScan();
     }
     startTimer();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _loginStore = Provider.of<LoginStore>(context);
-    super.didChangeDependencies();
   }
 
   Future<QrResponse> readQr(qr) async {
@@ -112,6 +114,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
   }
 
   setLoading() {
+    getsumScannerItems(_loginStore.eventSelected!.id);
     setState(() {
       this.loading = false;
     });
@@ -184,7 +187,9 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
               cacheWidth: 192,
             ),
             SizedBox(height: 16.0),
-            _buildTCounter(),
+            Observer(
+              builder: (_) => _buildTCounter(),
+            ),
             SizedBox(height: 16.0),
             _buildTitleScaner(),
             Padding(
@@ -205,7 +210,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     return Container(
       alignment: Alignment.center,
       child: Text(
-        "1920",
+        '${_loginStore.countScanned}',
         style: TextStyle(
           fontSize: 40.0,
           fontWeight: FontWeight.w600,
@@ -235,7 +240,6 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancelar', true, ScanMode.QR);
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -245,14 +249,30 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
     if (barcodeScanRes == "-1") {
       barcodeScanRes = 'No haz escaneado ningun boleto';
     } else {
-      final QrResponse data = await readQr(barcodeScanRes);
-      print(data.name);
+      await readQr(barcodeScanRes);
+      int count = await sumScannerItems(_loginStore.eventSelected!.id);
+      _loginStore.setCountScanned(count);
     }
     if (widget.openQr != null && widget.openQr == true) {
       setState(() {
         this.loading = false;
       });
     }
+  }
+
+  sumScannerItems(idEvent) async {
+    String key = 'event-$idEvent';
+    int countSum = await Preference.getInt(key);
+    int count = countSum + 1;
+    await Preference.setInt(key, count);
+    return count;
+  }
+
+  getsumScannerItems(idEvent) async {
+    String key = 'event-$idEvent';
+    int count = await Preference.getInt(key);
+    _loginStore.setCountScanned(count);
+    return count;
   }
 
   Widget _buildScanButton() {

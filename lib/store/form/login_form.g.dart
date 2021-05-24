@@ -106,6 +106,21 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$countScannedAtom = Atom(name: '_LoginStore.countScanned');
+
+  @override
+  int get countScanned {
+    _$countScannedAtom.reportRead();
+    return super.countScanned;
+  }
+
+  @override
+  set countScanned(int value) {
+    _$countScannedAtom.reportWrite(value, super.countScanned, () {
+      super.countScanned = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('_LoginStore.login');
 
   @override
@@ -146,6 +161,17 @@ mixin _$LoginStore on _LoginStore, Store {
         name: '_LoginStore.setDeviceId');
     try {
       return super.setDeviceId(value);
+    } finally {
+      _$_LoginStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setCountScanned(int value) {
+    final _$actionInfo = _$_LoginStoreActionController.startAction(
+        name: '_LoginStore.setCountScanned');
+    try {
+      return super.setCountScanned(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
@@ -204,6 +230,7 @@ success: ${success},
 loading: ${loading},
 eventSelected: ${eventSelected},
 devideId: ${devideId},
+countScanned: ${countScanned},
 canLogin: ${canLogin}
     ''';
   }
