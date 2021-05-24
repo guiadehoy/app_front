@@ -9,6 +9,7 @@ import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:app_scanner/utils/api_client.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
+import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -195,18 +196,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text(
+                      "Cancelar",
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  CupertinoDialogAction(
+                    child: Text(
                       "Aceptar",
                     ),
                     onPressed: () {
                       _loginStore.logout();
                       Navigator.of(context).pushNamed(Routes.login);
                     },
-                  ),
-                  CupertinoDialogAction(
-                    child: Text(
-                      "Cancelar",
-                    ),
-                    onPressed: () => Navigator.pop(context),
                   ),
                 ],
               )
@@ -228,19 +229,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: Text("Aceptar"),
+                    child: Text("Cancelar"),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  RoundedButtonWidget(
+                    buttonText: "Aceptar",
+                    buttonColor: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
                     onPressed: () {
                       _loginStore.logout();
                       Navigator.of(context).pushNamed(Routes.login);
-                    },
-                  ),
-                  TextButton(
-                    child: Text(
-                      "Cancelar",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context);
                     },
                   ),
                 ],
