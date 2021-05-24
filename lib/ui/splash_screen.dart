@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:app_scanner/constants/assets.dart';
+import 'package:app_scanner/constants/preferences.dart';
 import 'package:app_scanner/routes.dart';
+import 'package:app_scanner/utils/preferences.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +46,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   navigate() async {
-    Navigator.of(context).pushReplacementNamed(Routes.login);
+    String token = await Preference.getItem(Preferences.auth_token);
+    Navigator.of(context).pushReplacementNamed(
+        token != '' && token.isNotEmpty ? Routes.home : Routes.login);
   }
 }

@@ -5,6 +5,7 @@ import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/api_client.dart';
 import 'package:app_scanner/utils/device_utils.dart';
+import 'package:app_scanner/utils/preferences.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/app_icon_widget.dart';
 import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
@@ -207,7 +208,8 @@ class _LoginScreenState extends State<LoginScreen> {
     DeviceUtils.hideKeyboard(context);
     LoginResponse response =
         await loginService(_userEmailController.text, _passwordController.text);
-    print(response.accessToken);
+    await Preference.setItem(Preferences.auth_token, response.accessToken);
+    await Preference.setItem(Preferences.refresh_token, response.refreshToken);
   }
 
   Widget navigate(BuildContext context) {
