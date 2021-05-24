@@ -44,16 +44,23 @@ abstract class _LoginStore with Store {
   @observable
   EventResponse? eventSelected;
 
+  @observable
+  String devideId = "";
+
   @computed
   bool get canLogin =>
       !formErrorStore.hasErrorsInLogin &&
       userEmail.isNotEmpty &&
       password.isNotEmpty;
 
-  // actions:-------------------------------------------------------------------
   @action
   void setUserId(String value) {
     userEmail = value;
+  }
+
+  @action
+  void setDeviceId(String value) {
+    devideId = value;
   }
 
   @action

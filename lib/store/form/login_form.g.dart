@@ -91,6 +91,21 @@ mixin _$LoginStore on _LoginStore, Store {
     });
   }
 
+  final _$devideIdAtom = Atom(name: '_LoginStore.devideId');
+
+  @override
+  String get devideId {
+    _$devideIdAtom.reportRead();
+    return super.devideId;
+  }
+
+  @override
+  set devideId(String value) {
+    _$devideIdAtom.reportWrite(value, super.devideId, () {
+      super.devideId = value;
+    });
+  }
+
   final _$loginAsyncAction = AsyncAction('_LoginStore.login');
 
   @override
@@ -120,6 +135,17 @@ mixin _$LoginStore on _LoginStore, Store {
         name: '_LoginStore.setUserId');
     try {
       return super.setUserId(value);
+    } finally {
+      _$_LoginStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setDeviceId(String value) {
+    final _$actionInfo = _$_LoginStoreActionController.startAction(
+        name: '_LoginStore.setDeviceId');
+    try {
+      return super.setDeviceId(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
@@ -177,6 +203,7 @@ password: ${password},
 success: ${success},
 loading: ${loading},
 eventSelected: ${eventSelected},
+devideId: ${devideId},
 canLogin: ${canLogin}
     ''';
   }
