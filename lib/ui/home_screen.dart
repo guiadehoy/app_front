@@ -8,7 +8,6 @@ import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
 import 'package:app_scanner/utils/api_client.dart';
-import 'package:app_scanner/widgets/empty_app_bar_widget.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
@@ -38,16 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> initPlatformState() async {
     String? deviceId;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       deviceId = await PlatformDeviceId.getDeviceId;
     } on PlatformException {
       deviceId = 'null';
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     _loginStore.setDeviceId(deviceId!);
@@ -63,7 +57,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: EmptyAppBar(),
+      appBar: AppBar(
+          title: Text(
+            "Eventos del día",
+            style: TextStyle(
+              color: const Color(0xFF333333),
+              fontSize: 20.0,
+              letterSpacing: -0.4,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  _buildloguotAlert();
+                },
+                child: Icon(
+                  Icons.logout,
+                  size: 26.0,
+                  color: const Color(0xFF666666),
+                ),
+              ),
+            ),
+          ],
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          brightness: Brightness.light),
       body: body(),
     );
   }
@@ -71,35 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget listAndTitle() {
     return Column(
       children: <Widget>[
-        Container(
-          height: 50.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                child: Text(
-                  "Eventos del día",
-                  style: TextStyle(
-                    color: Color(0xFF333333),
-                    fontSize: 20.0,
-                    letterSpacing: -0.4,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Container(
-                child: GestureDetector(
-                  child: Image.asset(
-                    Assets.logoutIcon,
-                    cacheHeight: 24,
-                    cacheWidth: 24,
-                  ),
-                  onTap: () => _buildloguotAlert(),
-                ),
-              ),
-            ],
-          ),
-        ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 0.0),
@@ -190,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? new CupertinoAlertDialog(
                 title: Text("Advertencia"),
                 content: Text(
-                  "Subtitulo Subtitulo Subtitulo Subtitulo Subtitulo",
+                  "Mensaje de cierre",
                   style: TextStyle(fontSize: 16.0),
                 ),
                 actions: <Widget>[
