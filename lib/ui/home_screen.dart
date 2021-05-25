@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: <Widget>[
         Expanded(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 0.0),
+            padding: EdgeInsets.symmetric(vertical: 16.0),
             child: ListView.builder(
               itemCount: eventList.events.length,
               itemBuilder: (context, index) {
