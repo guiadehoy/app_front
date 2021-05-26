@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.only(right: 0.0),
               child: GestureDetector(
                 onTap: () {
                   _buildloguotAlert();
