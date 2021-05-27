@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_scanner/constants/assets.dart';
@@ -7,9 +6,10 @@ import 'package:app_scanner/models/event_response.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/ui/detail_event_screen.dart';
+import 'package:app_scanner/ui/no_connection.dart';
 import 'package:app_scanner/utils/api_client.dart';
+import 'package:app_scanner/utils/utils.dart';
 import 'package:app_scanner/widgets/rounded_button_widget.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +25,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late LoginStore _loginStore;
   late Client _client = Client();
-  late EventList eventList;
+  late EventList eventList = new EventList(events: []);
   late bool loading = true;
 
   @override
   void initState() {
+    setState(() {
+      this.loading = false;
+    });
     super.initState();
-    initPlatformState();
-    fetchEvents();
+    // initPlatformState();
+    fetchEventsCheckConnection();
   }
 
   Future<void> initPlatformState() async {
@@ -69,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 0.0),
+              padding: EdgeInsets.only(right: 16.0),
               child: GestureDetector(
                 onTap: () {
                   _buildloguotAlert();
@@ -121,13 +124,37 @@ class _HomeScreenState extends State<HomeScreen> {
           );
   }
 
+  Future<void> fetchEventsCheckConnection() async {
+    setState(() {
+      loading = false;
+    });
+
+    Future<bool> status = Utils.internetConnectivity();
+
+    bool _permissionStatus = await status;
+    print('Ejecuntando permisos$_permissionStatus');
+
+    if (!_permissionStatus) {
+      print("Entrando a no conexión");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NoConnectionScreen(),
+        ),
+      );
+      setState(() {
+        this.loading = true;
+      });
+    } else {
+      print('Ejecuntando permisos ejecutando$_permissionStatus');
+      fetchEvents();
+    }
+  }
+
   Future<EventList> fetchEvents() async {
     try {
-      setState(() {
-        loading = false;
-      });
-
       final response = await _client.init().get('/scanner/events/user');
+
       var eventListData = EventList.fromJson(response.data);
       setState(() {
         this.eventList = eventListData;
@@ -139,36 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
       return eventListData;
     } on DioError catch (ex) {
-      String errorMessage = json.decode(ex.response.toString())["message"];
-
       setState(() {
-        loading = true;
+        this.loading = true;
       });
 
-      BotToast.showNotification(
-        leading: (cancel) => SizedBox.fromSize(
-          size: const Size(40, 40),
-          child: IconButton(
-            icon: Icon(Icons.error, color: Colors.redAccent),
-            onPressed: cancel,
-          ),
-        ),
-        title: (_) => Text('Error'),
-        subtitle: (_) => Text(errorMessage),
-        trailing: (cancel) => IconButton(
-          icon: Icon(Icons.cancel),
-          onPressed: cancel,
-        ),
-        onTap: () {},
-        onLongPress: () {},
-        enableSlideOff: true,
-        contentPadding: EdgeInsets.all(0.0),
-        onlyOne: true,
-        animationDuration: Duration(milliseconds: 500),
-        animationReverseDuration: Duration(milliseconds: 500),
-        duration: Duration(seconds: 4),
-      );
-
+      String errorMessage = Utils.manageError(ex);
       throw new Exception(errorMessage);
     }
   }
@@ -180,9 +182,12 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context) {
         return Platform.isIOS
             ? new CupertinoAlertDialog(
-                title: Text("Advertencia"),
+                title: Text(
+                  "Advertencia",
+                  style: TextStyle(fontSize: 16.0),
+                ),
                 content: Text(
-                  "Mensaje de cierre",
+                  "¿Estas seguro que quieres cerrar sesión?",
                   style: TextStyle(fontSize: 16.0),
                 ),
                 actions: <Widget>[
@@ -206,15 +211,19 @@ class _HomeScreenState extends State<HomeScreen> {
             : new AlertDialog(
                 title: Text(
                   "Advertencia",
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
                 ),
                 content: FittedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Mensaje de cierre",
-                        style: TextStyle(fontSize: 16.0),
+                        "¿Estas seguro que quieres cerrar sesión?",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
                       ),
                     ],
                   ),

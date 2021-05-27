@@ -25,6 +25,7 @@ dependencies:
   dio: ^4.0.0
   flutter_launcher_icons: ^0.9.0
   platform_device_id: ^1.0.1
+  connectivity: ^3.0.4
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,8 @@ flutter:
   - assets/images/ok-icon.png
   - assets/images/close-icon.png
   - assets/images/error-icon.png
+  - assets/images/logo-sleep.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

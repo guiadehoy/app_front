@@ -20,4 +20,6 @@ class Assets {
   static const String clockIcon = "assets/images/clock-icon.png";
 
   static const String ticketIcon = "assets/images/ticket-icon.png";
+
+  static const String sleepIcon = "assets/images/logo-sleep.png";
 }
