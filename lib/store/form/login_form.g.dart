@@ -9,213 +9,107 @@ part of 'login_form.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$LoginStore on _LoginStore, Store {
-  Computed<bool>? _$canLoginComputed;
+  final _$emailAtom = Atom(name: '_LoginStore.email');
 
   @override
-  bool get canLogin => (_$canLoginComputed ??=
-          Computed<bool>(() => super.canLogin, name: '_LoginStore.canLogin'))
-      .value;
-
-  final _$userEmailAtom = Atom(name: '_LoginStore.userEmail');
-
-  @override
-  String get userEmail {
-    _$userEmailAtom.reportRead();
-    return super.userEmail;
+  String get email {
+    _$emailAtom.reportRead();
+    return super.email;
   }
 
   @override
-  set userEmail(String value) {
-    _$userEmailAtom.reportWrite(value, super.userEmail, () {
-      super.userEmail = value;
+  set email(String value) {
+    _$emailAtom.reportWrite(value, super.email, () {
+      super.email = value;
     });
   }
 
-  final _$passwordAtom = Atom(name: '_LoginStore.password');
+  final _$nameAtom = Atom(name: '_LoginStore.name');
 
   @override
-  String get password {
-    _$passwordAtom.reportRead();
-    return super.password;
+  String get name {
+    _$nameAtom.reportRead();
+    return super.name;
   }
 
   @override
-  set password(String value) {
-    _$passwordAtom.reportWrite(value, super.password, () {
-      super.password = value;
+  set name(String value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
     });
   }
 
-  final _$successAtom = Atom(name: '_LoginStore.success');
+  final _$profileAtom = Atom(name: '_LoginStore.profile');
 
   @override
-  bool get success {
-    _$successAtom.reportRead();
-    return super.success;
+  String get profile {
+    _$profileAtom.reportRead();
+    return super.profile;
   }
 
   @override
-  set success(bool value) {
-    _$successAtom.reportWrite(value, super.success, () {
-      super.success = value;
+  set profile(String value) {
+    _$profileAtom.reportWrite(value, super.profile, () {
+      super.profile = value;
     });
   }
 
-  final _$loadingAtom = Atom(name: '_LoginStore.loading');
+  final _$loggedAtom = Atom(name: '_LoginStore.logged');
 
   @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
+  bool get logged {
+    _$loggedAtom.reportRead();
+    return super.logged;
   }
 
   @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
+  set logged(bool value) {
+    _$loggedAtom.reportWrite(value, super.logged, () {
+      super.logged = value;
     });
-  }
-
-  final _$eventSelectedAtom = Atom(name: '_LoginStore.eventSelected');
-
-  @override
-  EventResponse? get eventSelected {
-    _$eventSelectedAtom.reportRead();
-    return super.eventSelected;
-  }
-
-  @override
-  set eventSelected(EventResponse? value) {
-    _$eventSelectedAtom.reportWrite(value, super.eventSelected, () {
-      super.eventSelected = value;
-    });
-  }
-
-  final _$devideIdAtom = Atom(name: '_LoginStore.devideId');
-
-  @override
-  String get devideId {
-    _$devideIdAtom.reportRead();
-    return super.devideId;
-  }
-
-  @override
-  set devideId(String value) {
-    _$devideIdAtom.reportWrite(value, super.devideId, () {
-      super.devideId = value;
-    });
-  }
-
-  final _$countScannedAtom = Atom(name: '_LoginStore.countScanned');
-
-  @override
-  int get countScanned {
-    _$countScannedAtom.reportRead();
-    return super.countScanned;
-  }
-
-  @override
-  set countScanned(int value) {
-    _$countScannedAtom.reportWrite(value, super.countScanned, () {
-      super.countScanned = value;
-    });
-  }
-
-  final _$loginAsyncAction = AsyncAction('_LoginStore.login');
-
-  @override
-  Future<dynamic> login() {
-    return _$loginAsyncAction.run(() => super.login());
-  }
-
-  final _$forgotPasswordAsyncAction = AsyncAction('_LoginStore.forgotPassword');
-
-  @override
-  Future<dynamic> forgotPassword() {
-    return _$forgotPasswordAsyncAction.run(() => super.forgotPassword());
-  }
-
-  final _$logoutAsyncAction = AsyncAction('_LoginStore.logout');
-
-  @override
-  Future<dynamic> logout() {
-    return _$logoutAsyncAction.run(() => super.logout());
   }
 
   final _$_LoginStoreActionController = ActionController(name: '_LoginStore');
 
   @override
-  void setUserId(String value) {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.setUserId');
+  void setEmail(String value) {
+    final _$actionInfo =
+        _$_LoginStoreActionController.startAction(name: '_LoginStore.setEmail');
     try {
-      return super.setUserId(value);
+      return super.setEmail(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setDeviceId(String value) {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.setDeviceId');
+  void setName(String value) {
+    final _$actionInfo =
+        _$_LoginStoreActionController.startAction(name: '_LoginStore.setName');
     try {
-      return super.setDeviceId(value);
+      return super.setName(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCountScanned(int value) {
+  void setLogged(bool value) {
     final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.setCountScanned');
+        name: '_LoginStore.setLogged');
     try {
-      return super.setCountScanned(value);
+      return super.setLogged(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setPassword(String value) {
+  void setProfile(String value) {
     final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.setPassword');
+        name: '_LoginStore.setProfile');
     try {
-      return super.setPassword(value);
-    } finally {
-      _$_LoginStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setEventSelected(EventResponse value) {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.setEventSelected');
-    try {
-      return super.setEventSelected(value);
-    } finally {
-      _$_LoginStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void validateUserEmail(String value) {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.validateUserEmail');
-    try {
-      return super.validateUserEmail(value);
-    } finally {
-      _$_LoginStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void validatePassword(String value) {
-    final _$actionInfo = _$_LoginStoreActionController.startAction(
-        name: '_LoginStore.validatePassword');
-    try {
-      return super.validatePassword(value);
+      return super.setProfile(value);
     } finally {
       _$_LoginStoreActionController.endAction(_$actionInfo);
     }
@@ -224,63 +118,10 @@ mixin _$LoginStore on _LoginStore, Store {
   @override
   String toString() {
     return '''
-userEmail: ${userEmail},
-password: ${password},
-success: ${success},
-loading: ${loading},
-eventSelected: ${eventSelected},
-devideId: ${devideId},
-countScanned: ${countScanned},
-canLogin: ${canLogin}
-    ''';
-  }
-}
-
-mixin _$FormErrorStore on _FormErrorStore, Store {
-  Computed<bool>? _$hasErrorsInLoginComputed;
-
-  @override
-  bool get hasErrorsInLogin => (_$hasErrorsInLoginComputed ??= Computed<bool>(
-          () => super.hasErrorsInLogin,
-          name: '_FormErrorStore.hasErrorsInLogin'))
-      .value;
-
-  final _$userEmailAtom = Atom(name: '_FormErrorStore.userEmail');
-
-  @override
-  String get userEmail {
-    _$userEmailAtom.reportRead();
-    return super.userEmail;
-  }
-
-  @override
-  set userEmail(String value) {
-    _$userEmailAtom.reportWrite(value, super.userEmail, () {
-      super.userEmail = value;
-    });
-  }
-
-  final _$passwordAtom = Atom(name: '_FormErrorStore.password');
-
-  @override
-  String get password {
-    _$passwordAtom.reportRead();
-    return super.password;
-  }
-
-  @override
-  set password(String value) {
-    _$passwordAtom.reportWrite(value, super.password, () {
-      super.password = value;
-    });
-  }
-
-  @override
-  String toString() {
-    return '''
-userEmail: ${userEmail},
-password: ${password},
-hasErrorsInLogin: ${hasErrorsInLogin}
+email: ${email},
+name: ${name},
+profile: ${profile},
+logged: ${logged}
     ''';
   }
 }
