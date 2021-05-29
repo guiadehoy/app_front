@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
+import 'package:app_scanner/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -52,6 +53,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
   @override
   void initState() {
+    Utils.checkConnection(context);
     super.initState();
 
     pullToRefreshController = PullToRefreshController(
@@ -109,25 +111,28 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                  accountEmail: Observer(
-                    builder: (_) => Text(_loginStore.email),
+                accountEmail: Text(
+                  _loginStore.email,
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  accountName: Padding(
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: Observer(
-                      builder: (_) => Text(
-                        _loginStore.name,
-                        style: TextStyle(
-                          fontSize: 22.0,
-                        ),
+                ),
+                accountName: Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: Observer(
+                    builder: (_) => Text(
+                      _loginStore.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22.0,
                       ),
                     ),
                   ),
-                  currentAccountPicture: Observer(
-                    builder: (_) => CircleAvatar(
-                      backgroundImage: new NetworkImage(_loginStore.profile),
-                    ),
-                  )),
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: new NetworkImage(_loginStore.profile),
+                ),
+              ),
               ListTile(
                 title: Text('Inicio'),
                 onTap: () {
@@ -160,12 +165,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
                           preferences.remove("auth_token");
                         }
-                        _loginStore.setEmail("juanpereze@example.do");
-                        _loginStore.setName("Juan Perez");
-                        _loginStore
-                            .setProfile("https://www.gravatar.com/avatar?d=mp");
-                        _loginStore.setLogged(false);
-
+                        logout();
                         Navigator.pushReplacementNamed(context, Routes.login);
                       },
                     ),
@@ -183,96 +183,110 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
           Expanded(
             child: Stack(
               children: [
-                InAppWebView(
-                  key: webViewKey,
-                  initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-                  // initialFile: "assets/index.html",
-                  initialUserScripts: UnmodifiableListView<UserScript>([]),
-                  initialOptions: options,
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                  onLoadStart: (controller, url) async {
-                    await controller.webStorage.localStorage
-                        .setItem(key: "pwa", value: "true");
+                Align(
+                  alignment: Alignment.center,
+                  child: InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
+                    initialUserScripts: UnmodifiableListView<UserScript>([]),
+                    initialOptions: options,
+                    pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                    },
+                    onLoadStart: (controller, url) async {
+                      await controller.webStorage.localStorage
+                          .setItem(key: "pwa", value: "true");
 
-                    savePreferenceFromController(controller);
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
+                      savePreferenceFromController(controller);
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    androidOnPermissionRequest:
+                        (controller, origin, resources) async {
+                      return PermissionRequestResponse(
                         resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
+                        action: PermissionRequestResponseAction.GRANT,
+                      );
+                    },
+                    shouldOverrideUrlLoading:
+                        (controller, navigationAction) async {
+                      return await shouldOverrideUrlLoadingWebview(
+                          navigationAction);
+                    },
+                    onLoadStop: (controller, url) async {
+                      savePreferenceFromController(controller);
 
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      if (await canLaunch(url)) {
-                        // Launch the App
-                        await launch(
-                          url,
-                        );
-                        // and cancel the request
-                        return NavigationActionPolicy.CANCEL;
-                      }
-                    }
-
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (controller, url) async {
-                    savePreferenceFromController(controller);
-
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onLoadError: (controller, url, code, message) {
-                    pullToRefreshController.endRefreshing();
-                  },
-                  onProgressChanged: (controller, progress) {
-                    if (progress == 100) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onLoadError: (controller, url, code, message) {
                       pullToRefreshController.endRefreshing();
-                    }
-                    setState(() {
-                      this.progress = progress / 100;
-                      urlController.text = this.url;
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
+                    },
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) {
+                        pullToRefreshController.endRefreshing();
+                      }
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = this.url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onConsoleMessage: (controller, consoleMessage) {
+                      print(consoleMessage);
+                    },
+                  ),
                 ),
-                progress < 1.0
-                    ? LinearProgressIndicator(value: progress)
-                    : Container(),
+                Align(alignment: Alignment.center, child: _buildProgressBar()),
               ],
             ),
           ),
         ]),
       ),
     );
+  }
+
+  Widget _buildProgressBar() {
+    if (progress != 1.0) {
+      return CircularProgressIndicator();
+    }
+    return Container();
+  }
+
+  Future<NavigationActionPolicy> shouldOverrideUrlLoadingWebview(
+      NavigationAction navigationAction) async {
+    var uri = navigationAction.request.url!;
+
+    if (!["http", "https", "file", "chrome", "data", "javascript", "about"]
+        .contains(uri.scheme)) {
+      if (await canLaunch(url)) {
+        // Launch the App
+        await launch(
+          url,
+        );
+        // and cancel the request
+        return NavigationActionPolicy.CANCEL;
+      }
+    }
+
+    return NavigationActionPolicy.ALLOW;
+  }
+
+  void logout() {
+    _loginStore.setEmail("juanpereze@example.do");
+    _loginStore.setName("Juan Perez");
+    _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
+    _loginStore.setLogged(false);
   }
 
   Future saveDataForDrawer() async {
@@ -283,17 +297,18 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
     var email = preferences.getString("email");
     var profileImage = preferences.getString("profile");
 
-    _loginStore.setEmail(email ?? '');
-    _loginStore.setName(firstName ?? '');
-    _loginStore.setProfile(profileImage ?? '');
-    _loginStore.setLogged(token != null);
-
     if (token != null) {
       setState(() {
         this.authUser = true;
       });
+
+      _loginStore.setEmail(email ?? '');
+      _loginStore.setName(firstName ?? '');
+      _loginStore.setProfile(profileImage ?? '');
+      _loginStore.setLogged(true);
     } else {
       setState(() {
+        logout();
         this.authUser = false;
       });
     }
