@@ -3,7 +3,7 @@
   <uses-permission android:name="android.permission.CAMERA"/>
 
    <application
-        android:label="Escaner Guía De Hoy"
+        android:label="Guía De Hoy"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

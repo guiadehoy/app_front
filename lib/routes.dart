@@ -10,6 +10,8 @@ class Routes {
 
   static const String splash = '/splash';
   static const String home = '/home';
+  static const String next = '/next';
+  static const String history = '/history';
 
   static final routes = <String, WidgetBuilder>{
     login: (BuildContext context) => InAppWebViewExampleScreen(
@@ -21,6 +23,12 @@ class Routes {
     splash: (BuildContext context) => SplashScreen(),
     home: (BuildContext context) => InAppWebViewExampleScreen(
           url: 'https://app.dev.guiadehoy.com',
+        ),
+    next: (BuildContext context) => InAppWebViewExampleScreen(
+          url: 'https://app.dev.guiadehoy.com/siguientes-eventos',
+        ),
+    history: (BuildContext context) => InAppWebViewExampleScreen(
+          url: 'https://app.dev.guiadehoy.com/eventos-pasados',
         ),
   };
 }

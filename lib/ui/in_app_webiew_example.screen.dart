@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
@@ -104,7 +105,12 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("")),
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        title: Text(""),
+      ),
       drawer: Observer(
         builder: (_) => Drawer(
           child: ListView(
@@ -124,7 +130,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                       _loginStore.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22.0,
+                        fontSize: 18.0,
                       ),
                     ),
                   ),
@@ -134,26 +140,107 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                 ),
               ),
               ListTile(
-                title: Text('Inicio'),
+                leading: Icon(
+                  Icons.home,
+                  color: Color(0xFF666666),
+                ),
+                title: Text(
+                  'Inicio',
+                  style: TextStyle(
+                    color: Color(0xFF666666),
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.0,
+                  ),
+                ),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, Routes.home);
+                  Navigator.pushNamed(context, Routes.home);
                 },
               ),
               ListTile(
-                title: Text('Comida'),
+                leading: Icon(
+                  Icons.food_bank,
+                  color: Color(0xFF666666),
+                ),
+                title: Text(
+                  'Comida',
+                  style: TextStyle(
+                    color: Color(0xFF666666),
+                    fontWeight: FontWeight.normal,
+                    fontSize: 20.0,
+                  ),
+                ),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, Routes.food);
+                  Navigator.pushNamed(context, Routes.food);
                 },
               ),
+              this.authUser
+                  ? ListTile(
+                      leading: Icon(
+                        Icons.history_toggle_off_sharp,
+                        color: Color(0xFF666666),
+                      ),
+                      title: Text(
+                        'Próximos eventos',
+                        style: TextStyle(
+                          color: Color(0xFF666666),
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.next);
+                      },
+                    )
+                  : Text(""),
+              this.authUser
+                  ? ListTile(
+                      leading: Icon(
+                        Icons.history,
+                        color: Color(0xFF666666),
+                      ),
+                      title: Text(
+                        'Historial de compras',
+                        style: TextStyle(
+                          color: Color(0xFF666666),
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.history);
+                      },
+                    )
+                  : Text(""),
               (this.authUser == false)
                   ? ListTile(
-                      title: Text('Iniciar sesión'),
+                      leading: Icon(
+                        Icons.login,
+                        color: Color(0xFF666666),
+                      ),
+                      title: Text(
+                        'Iniciar sesión',
+                        style: TextStyle(
+                          color: Color(0xFF666666),
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20.0,
+                        ),
+                      ),
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, Routes.login);
+                        Navigator.pushNamed(context, Routes.login);
                       },
                     )
                   : ListTile(
-                      title: Text('Cerrar sesión'),
+                      leading: Icon(
+                        Icons.logout,
+                        color: Color(0xFF666666),
+                      ),
+                      title: Text(
+                        'Cerrar sesión',
+                        style: TextStyle(
+                            color: Color(0xFF666666),
+                            fontWeight: FontWeight.normal,
+                            fontSize: 20.0),
+                      ),
                       onTap: () async {
                         Future<SharedPreferences> _prefs =
                             SharedPreferences.getInstance();
@@ -166,7 +253,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                           preferences.remove("auth_token");
                         }
                         logout();
-                        Navigator.pushReplacementNamed(context, Routes.login);
+                        Navigator.pushNamed(context, Routes.login);
                       },
                     ),
             ],
@@ -304,7 +391,14 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
       _loginStore.setEmail(email ?? '');
       _loginStore.setName(firstName ?? '');
-      _loginStore.setProfile(profileImage ?? '');
+      _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
+
+      if (profileImage != null) {
+        _loginStore.setProfile(profileImage);
+      } else {
+        _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
+      }
+      _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
       _loginStore.setLogged(true);
     } else {
       setState(() {
