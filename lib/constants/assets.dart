@@ -9,6 +9,10 @@ class Assets {
 
   static const String logoQr = "assets/images/logo-qr.png";
 
+  static const String launcherIcon = "assets/images/launcher_icon.png";
+
+  static const String logoFull = "assets/images/logo-full.png";
+
   static const String okIcon = "assets/images/ok-icon.png";
 
   static const String closeIcon = "assets/images/close-icon.png";

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "400933220385",
+    "project_id": "guiadehoy-cms",
+    "storage_bucket": "guiadehoy-cms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400933220385:android:6132aeabfc52d524a9b360",
+        "android_client_info": {
+          "package_name": "com.guiadehoy.oficial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400933220385-vp660m4btp0ggbkil8hn5bgqirrqc145.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.guiadehoy.oficial",
+            "certificate_hash": "4da6b615d2e73409ea850d0ff2e6f7d1980452e9"
+          }
+        },
+        {
+          "client_id": "400933220385-kd6216i5ullsm8q0rccfosp80a6k35tm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFc5GYKiM_0UxKTv9OCVnWzwewn9ayjn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400933220385-kd6216i5ullsm8q0rccfosp80a6k35tm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

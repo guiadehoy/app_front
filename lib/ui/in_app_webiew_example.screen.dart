@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
-import 'dart:math';
 
+import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
 import 'package:app_scanner/utils/utils.dart';
@@ -106,10 +106,23 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.white, //change your color here
+          color: Color(0xF0754395), //change your color here
         ),
-        title: Text(""),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, Routes.home);
+          },
+          child: Padding(
+            padding: EdgeInsets.only(right: 16.0),
+            child: Image.asset(
+              Assets.logoFull,
+              width: 120,
+            ),
+          ),
+        ),
       ),
       drawer: Observer(
         builder: (_) => Drawer(
@@ -279,9 +292,16 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                     initialOptions: options,
                     pullToRefreshController: pullToRefreshController,
                     onWebViewCreated: (controller) {
+                      controller.webStorage.localStorage
+                          .setItem(key: "pwa", value: "true");
                       webViewController = controller;
+
+                      controller.android
+                          .getOriginalUrl()
+                          .then((value) => print(value));
                     },
                     onLoadStart: (controller, url) async {
+                      print(url);
                       await controller.webStorage.localStorage
                           .setItem(key: "pwa", value: "true");
 
@@ -384,6 +404,9 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
     var email = preferences.getString("email");
     var profileImage = preferences.getString("profile");
 
+    print("profileImage");
+    print(profileImage);
+
     if (token != null) {
       setState(() {
         this.authUser = true;
@@ -393,12 +416,11 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
       _loginStore.setName(firstName ?? '');
       _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
 
-      if (profileImage != null) {
+      if (profileImage != null && profileImage.startsWith("http")) {
         _loginStore.setProfile(profileImage);
       } else {
         _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
       }
-      _loginStore.setProfile("https://www.gravatar.com/avatar?d=mp");
       _loginStore.setLogged(true);
     } else {
       setState(() {

@@ -17,7 +17,7 @@ dependencies:
   validators: ^3.0.0
   mobx: ^2.0.0
   flutter_mobx: ^2.0.0
-  flash: ^1.5.2+2
+  flash: ^2.0.1
   bot_toast: ^4.0.1
   shared_preferences: ^2.0.5
   flutter_barcode_scanner: ^2.0.0
@@ -27,12 +27,14 @@ dependencies:
   connectivity: ^3.0.4
   flutter_inappwebview: ^5.3.2
   url_launcher: ^6.0.4
+  firebase_core: "^1.4.0"
+  firebase_remote_config: "^0.10.0+3"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^1.12.2
+  build_runner: ^2.1.0
   mobx_codegen: ^2.0.0  
 
 # For information on the generic Dart part of this file, see the
