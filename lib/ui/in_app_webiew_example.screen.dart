@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app_scanner/constants/assets.dart';
 import 'package:app_scanner/routes.dart';
 import 'package:app_scanner/store/form/login_form.dart';
+import 'package:app_scanner/utils/remote_service.dart';
 import 'package:app_scanner/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -24,6 +25,18 @@ class InAppWebViewExampleScreen extends StatefulWidget {
 
 class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
   final GlobalKey webViewKey = GlobalKey();
+
+  late RemoteConfigService _remoteConfigService;
+
+  initializeRemoteConfig() async {
+    _remoteConfigService = (await RemoteConfigService.getInstance())!;
+    setState(() {
+      this.urlCompleted = _remoteConfigService.getStringValue + widget.url;
+    });
+
+    print(_remoteConfigService.getStringValue + widget.url);
+  }
+
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool authUser = false;
   String name = '';
@@ -49,13 +62,14 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
   late PullToRefreshController pullToRefreshController;
   String url = "";
+  String urlCompleted = "";
   double progress = 0;
-  final urlController = TextEditingController();
 
   @override
   void initState() {
-    Utils.checkConnection(context);
     super.initState();
+    this.initializeRemoteConfig();
+    Utils.checkConnection(context);
 
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
@@ -81,6 +95,13 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  getUrlWebpage() async {
+    final SharedPreferences preferences = await this._prefs;
+    setState(() {
+      this.urlCompleted = preferences.getString("url")!;
+    });
   }
 
   savePropInPreferences(InAppWebViewController controller, key, type) async {
@@ -285,74 +306,81 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: InAppWebView(
-                    key: webViewKey,
-                    initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-                    initialUserScripts: UnmodifiableListView<UserScript>([]),
-                    initialOptions: options,
-                    pullToRefreshController: pullToRefreshController,
-                    onWebViewCreated: (controller) {
-                      controller.webStorage.localStorage
-                          .setItem(key: "pwa", value: "true");
-                      webViewController = controller;
+                  child: this.urlCompleted != ""
+                      ? InAppWebView(
+                          key: webViewKey,
+                          initialUrlRequest:
+                              URLRequest(url: Uri.parse(this.urlCompleted)),
+                          initialUserScripts:
+                              UnmodifiableListView<UserScript>([]),
+                          initialOptions: options,
+                          pullToRefreshController: pullToRefreshController,
+                          onWebViewCreated: (controller) {
+                            webViewController = controller;
+                            controller.webStorage.localStorage
+                                .setItem(key: "pwa", value: "true");
+                            var value = controller.webStorage.localStorage
+                                .getItem(key: "pwa");
 
-                      controller.android
-                          .getOriginalUrl()
-                          .then((value) => print(value));
-                    },
-                    onLoadStart: (controller, url) async {
-                      print(url);
-                      await controller.webStorage.localStorage
-                          .setItem(key: "pwa", value: "true");
+                            print(value);
+                          },
+                          onLoadStart: (controller, url) async {
+                            print(this.urlCompleted);
+                            await controller.webStorage.localStorage
+                                .setItem(key: "pwa", value: "true");
 
-                      savePreferenceFromController(controller);
-                      setState(() {
-                        this.url = url.toString();
-                        urlController.text = this.url;
-                      });
-                    },
-                    androidOnPermissionRequest:
-                        (controller, origin, resources) async {
-                      return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT,
-                      );
-                    },
-                    shouldOverrideUrlLoading:
-                        (controller, navigationAction) async {
-                      return await shouldOverrideUrlLoadingWebview(
-                          navigationAction);
-                    },
-                    onLoadStop: (controller, url) async {
-                      savePreferenceFromController(controller);
+                            var value = await controller.webStorage.localStorage
+                                .getItem(key: "pwa");
 
-                      setState(() {
-                        this.url = url.toString();
-                        urlController.text = this.url;
-                      });
-                    },
-                    onLoadError: (controller, url, code, message) {
-                      pullToRefreshController.endRefreshing();
-                    },
-                    onProgressChanged: (controller, progress) {
-                      if (progress == 100) {
-                        pullToRefreshController.endRefreshing();
-                      }
-                      setState(() {
-                        this.progress = progress / 100;
-                        urlController.text = this.url;
-                      });
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                      setState(() {
-                        this.url = url.toString();
-                        urlController.text = this.url;
-                      });
-                    },
-                    onConsoleMessage: (controller, consoleMessage) {
-                      print(consoleMessage);
-                    },
-                  ),
+                            print(value);
+
+                            savePreferenceFromController(controller);
+                            setState(() {
+                              this.url = url.toString();
+                            });
+                          },
+                          androidOnPermissionRequest:
+                              (controller, origin, resources) async {
+                            return PermissionRequestResponse(
+                              resources: resources,
+                              action: PermissionRequestResponseAction.GRANT,
+                            );
+                          },
+                          shouldOverrideUrlLoading:
+                              (controller, navigationAction) async {
+                            return await shouldOverrideUrlLoadingWebview(
+                                navigationAction);
+                          },
+                          onLoadStop: (controller, url) async {
+                            savePreferenceFromController(controller);
+                            setState(() {
+                              this.url = url.toString();
+                            });
+                          },
+                          onLoadError: (controller, url, code, message) {
+                            pullToRefreshController.endRefreshing();
+                          },
+                          onProgressChanged: (controller, progress) {
+                            if (progress == 100) {
+                              pullToRefreshController.endRefreshing();
+                            }
+                            setState(() {
+                              this.progress = progress / 100;
+                            });
+                          },
+                          onUpdateVisitedHistory:
+                              (controller, url, androidIsReload) {
+                            setState(() {
+                              this.url = url.toString();
+                            });
+                          },
+                          onConsoleMessage: (controller, consoleMessage) {
+                            print(consoleMessage);
+                          },
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator()),
                 ),
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
               ],
@@ -403,9 +431,6 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
     var firstName = preferences.getString("name");
     var email = preferences.getString("email");
     var profileImage = preferences.getString("profile");
-
-    print("profileImage");
-    print(profileImage);
 
     if (token != null) {
       setState(() {

@@ -31,7 +31,6 @@ class _NoConnectionScreenState extends State<NoConnectionScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        brightness: Brightness.light,
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 0.0),

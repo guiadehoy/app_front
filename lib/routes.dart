@@ -15,20 +15,20 @@ class Routes {
 
   static final routes = <String, WidgetBuilder>{
     login: (BuildContext context) => InAppWebViewExampleScreen(
-          url: 'https://app.dev.guiadehoy.com/login',
+          url: '/login',
         ),
     food: (BuildContext context) => InAppWebViewExampleScreen(
-          url: 'https://app.dev.guiadehoy.com/food',
+          url: '/food',
         ),
     splash: (BuildContext context) => SplashScreen(),
     home: (BuildContext context) => InAppWebViewExampleScreen(
-          url: 'https://app.dev.guiadehoy.com',
+          url: '/',
         ),
     next: (BuildContext context) => InAppWebViewExampleScreen(
-          url: 'https://app.dev.guiadehoy.com/siguientes-eventos',
+          url: '/siguientes-eventos',
         ),
     history: (BuildContext context) => InAppWebViewExampleScreen(
-          url: 'https://app.dev.guiadehoy.com/eventos-pasados',
+          url: '/eventos-pasados',
         ),
   };
 }
